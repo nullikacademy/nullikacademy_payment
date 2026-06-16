@@ -67,7 +67,10 @@ final class Response
         http_response_code(404);
         $viewFile = dirname(__DIR__, 2) . '/views/pages/errors/404.php';
         if (is_file($viewFile)) {
-            $content = (new View())->render('pages/errors/404', ['title' => '۴۰۴ - صفحه یافت نشد']);
+            $content = (new View())->renderWithLayout('pages/errors/404', [
+                'title'       => '۴۰۴ - صفحه یافت نشد',
+                'description' => 'صفحه مورد نظر یافت نشد.',
+            ], 'layouts/app');
             self::html($content, 404);
         }
         self::html('<h1>404 - یافت نشد</h1>', 404);
