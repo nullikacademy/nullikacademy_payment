@@ -128,8 +128,8 @@ final class App
 
         $csp = "default-src 'self'; "
             . "img-src 'self' data: https:; "
-            . "font-src 'self' data:; "
-            . "style-src 'self' 'unsafe-inline'; "
+            . "font-src 'self' data: https://cdn.jsdelivr.net; "
+            . "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
             . "script-src 'self'; "
             . "connect-src 'self' https://api-web.tabdeal.org; "
             . "frame-ancestors 'self'; base-uri 'self'; form-action 'self'";
