@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS plans (
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    tool_id       INT UNSIGNED NOT NULL,
+    name          VARCHAR(120) NOT NULL,
+    badge         VARCHAR(60) DEFAULT NULL,
+    duration      VARCHAR(60) NOT NULL,
+    duration_days INT UNSIGNED NOT NULL DEFAULT 30,
+    price_usdt    DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+    price_irt     BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    mode_type     ENUM('email_password','organization_id') NOT NULL DEFAULT 'email_password',
+    is_featured   TINYINT(1) NOT NULL DEFAULT 0,
+    sort_order    INT NOT NULL DEFAULT 0,
+    status        ENUM('active','inactive') NOT NULL DEFAULT 'active',
+    created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_plans_tool (tool_id),
+    KEY idx_plans_status (status),
+    CONSTRAINT fk_plans_tool FOREIGN KEY (tool_id) REFERENCES tools (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

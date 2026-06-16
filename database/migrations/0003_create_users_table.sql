@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS users (
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    mobile        VARCHAR(15) NOT NULL,
+    first_name    VARCHAR(80) DEFAULT NULL,
+    last_name     VARCHAR(80) DEFAULT NULL,
+    mobile_verified_at TIMESTAMP NULL DEFAULT NULL,
+    orders_count  INT UNSIGNED NOT NULL DEFAULT 0,
+    created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_users_mobile (mobile)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
