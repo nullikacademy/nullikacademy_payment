@@ -3,10 +3,12 @@
 $admin = $admin ?? [];
 $role = $admin['role'] ?? 'manager';
 $uri = $_SERVER['REQUEST_URI'] ?? '';
-function navActive(string $path, string $uri): string {
-  $p = parse_url($uri, PHP_URL_PATH) ?? '';
-  if ($path === '/admin') return $p === '/admin' ? 'is-active' : '';
-  return str_starts_with($p, $path) ? 'is-active' : '';
+if (!function_exists('navActive')) {
+  function navActive(string $path, string $uri): string {
+    $p = parse_url($uri, PHP_URL_PATH) ?? '';
+    if ($path === '/admin') return $p === '/admin' ? 'is-active' : '';
+    return str_starts_with($p, $path) ? 'is-active' : '';
+  }
 }
 ?>
 <!DOCTYPE html>

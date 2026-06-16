@@ -19,7 +19,7 @@ final class SettingsController extends Controller
         $this->view('admin/settings/index', [
             'title'    => 'تنظیمات',
             'admin'    => (new AuthService())->user(),
-            'settings' => Setting::all(),
+            'settings' => Setting::map(),
         ], 'admin/layouts/admin');
     }
 

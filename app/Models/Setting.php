@@ -33,7 +33,8 @@ final class Setting extends Model
         self::$cache[$key] = $value;
     }
 
-    public static function all(): array
+    /** Return all settings as a key => value map. */
+    public static function map(): array
     {
         $rows = Database::select('SELECT * FROM settings ORDER BY `group`, `key`');
         $out = [];
