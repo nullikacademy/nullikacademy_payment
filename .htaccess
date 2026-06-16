@@ -1,0 +1,20 @@
+# ==========================================================
+# Nullik Academy - Root redirect to /public
+# Use this when the domain document root points at the project
+# root instead of /public (common on shared hosting).
+# ==========================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If not already in /public, route requests into it
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Deny access to everything outside public by default
+<FilesMatch "(\.env|composer\.(json|lock)|\.gitignore)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes

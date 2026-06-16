@@ -1,0 +1,29 @@
+# Environment & secrets
+.env
+*.pem
+*.key
+
+# Dependencies
+/vendor/
+
+# Storage (keep structure, ignore content)
+/storage/receipts/*
+!/storage/receipts/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+
+# Uploads
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp

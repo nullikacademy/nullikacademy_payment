@@ -1,0 +1,3 @@
+# Deny ALL web access to storage (receipts, logs, cache, sessions)
+Require all denied
+Deny from all
