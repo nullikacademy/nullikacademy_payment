@@ -113,13 +113,14 @@
 .bank-card__label { font-size: 0.78rem; color: rgba(234,241,255,0.5); }
 .bank-card__value { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; color: #EAF1FF; }
 .bank-card__value > span { direction: ltr; word-break: break-all; }
-.bank-card__row--name { border-bottom: none; flex-direction: row; align-items: center; justify-content: space-between; }
+.bank-card__row--name { border-bottom: none; flex-direction: row; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 16px; }
 .bank-card__holder { font-weight: 700; color: #EAF1FF; letter-spacing: 0; }
 .copy-btn { flex: 0 0 auto; padding: 7px 16px; border-radius: 10px; background: rgba(66,165,255,0.16); color: var(--accent); font-size: 0.78rem; font-weight: 700; border: 1px solid rgba(66,165,255,0.3); transition: background 0.2s; }
 .copy-btn:hover { background: rgba(66,165,255,0.3); }
 .copy-btn.is-copied { background: var(--success); color: #fff; border-color: transparent; }
 
-.pay-note { margin-top: 16px; padding: 14px 16px; border-radius: var(--radius-sm); background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: #FCD9A1; font-size: 0.88rem; }
+.pay-note { margin-top: 16px; padding: 14px 16px; border-radius: var(--radius-sm); background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.35); color: #BBF7D0; font-size: 0.9rem; line-height: 2; }
+.pay-note__amount { color: #fff; font-weight: 800; }
 
 /* Uploader */
 .uploader {

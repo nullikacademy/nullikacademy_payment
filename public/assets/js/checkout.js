@@ -73,8 +73,8 @@
     el.orgField.hidden = !isOrg;
 
     el.accountTitle.textContent = "اطلاعات حساب " + tool.name + " خود را وارد کنید";
-    el.payNote.textContent = "لطفا مبلغ " + plan.price_irt_formatted +
-      " تومان به شماره کارت یا شماره شبای زیر واریز نمایید.";
+    el.payNote.innerHTML = 'لطفا مبلغ <b class="pay-note__amount">' + plan.price_irt_formatted +
+      ' تومان</b> به شماره کارت یا شماره شبای بالا واریز نمایید.';
 
     el.modal.classList.add("is-open");
     el.modal.setAttribute("aria-hidden", "false");
