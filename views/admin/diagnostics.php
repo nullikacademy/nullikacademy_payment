@@ -5,6 +5,13 @@
   <p class="page-sub">این صفحه پاسخ خام سرویس‌های بیرونی را نشان می‌دهد. خروجی را کپی و برای پشتیبانی فنی ارسال کنید.</p>
 </div>
 
+<section class="glass detail-card detail-card--wide" style="margin-bottom:18px">
+  <h2 class="detail-card__title">۰) وضعیت پایگاه‌داده و خطاهای اخیر</h2>
+  <p class="page-sub">ستون <code dir="ltr">tools.color</code>: <strong><?= e($colorColumn ?? '—') ?></strong></p>
+  <p class="page-sub">۴۰ خط آخر لاگ خطا:</p>
+  <pre class="diag-pre" dir="ltr"><?= e($logTail ?? '') ?></pre>
+</section>
+
 <section class="glass detail-card detail-card--wide">
   <h2 class="detail-card__title">۱) تنظیمات (.env)</h2>
   <dl class="detail-list">

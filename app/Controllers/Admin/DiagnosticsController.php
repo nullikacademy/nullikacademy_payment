@@ -91,9 +91,23 @@ final class DiagnosticsController extends Controller
             $probe = $this->probeIppanel(normalize_mobile($probeMobile));
         }
 
+        // Recent error log (last lines of today's log file).
+        $logTail = $this->recentLog();
+
+        // Check whether tools.color column exists (common upgrade gotcha).
+        $colorColumn = 'نامشخص';
+        try {
+            $col = Database::selectOne("SHOW COLUMNS FROM tools LIKE 'color'");
+            $colorColumn = $col ? 'موجود است ✓' : 'وجود ندارد ✗ — باید ALTER TABLE اجرا شود';
+        } catch (\Throwable $e) {
+            $colorColumn = 'خطا در بررسی: ' . $e->getMessage();
+        }
+
         $this->view('admin/diagnostics', [
             'title'      => 'عیب‌یابی سرویس‌ها',
             'admin'      => (new AuthService())->user(),
+            'logTail'    => $logTail,
+            'colorColumn'=> $colorColumn,
             'configRows' => $configRows,
             'usdt'       => $usdt,
             'smsResult'  => $smsResult,
@@ -102,6 +116,20 @@ final class DiagnosticsController extends Controller
             'probe'      => $probe,
             'probeMobile'=> $probeMobile,
         ], 'admin/layouts/admin');
+    }
+
+    /** Return the last lines of the most recent log file. */
+    private function recentLog(int $lines = 40): string
+    {
+        $dir = base_path((string) config('app.logs_path', 'storage/logs'));
+        $files = glob($dir . '/*.log');
+        if (!$files) {
+            return '(لاگی ثبت نشده است)';
+        }
+        usort($files, static fn ($a, $b) => filemtime($b) <=> filemtime($a));
+        $content = (string) file_get_contents($files[0]);
+        $all = explode("\n", trim($content));
+        return implode("\n", array_slice($all, -$lines));
     }
 
     /**
