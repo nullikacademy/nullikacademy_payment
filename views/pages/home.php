@@ -16,14 +16,8 @@
 
     <?= $this->component('hero-carousel', ['tools' => $tools]) ?>
 
-    <!-- Dynamic tool info (AJAX) -->
-    <div class="tool-info" id="toolInfo" aria-live="polite">
-      <div class="tool-info__logo skeleton" id="toolInfoLogo"></div>
-      <div class="tool-info__text">
-        <h2 class="tool-info__name" id="toolInfoName">&nbsp;</h2>
-        <p class="tool-info__desc" id="toolInfoDesc">&nbsp;</p>
-      </div>
-    </div>
+    <!-- Dynamic tool description (AJAX, single line) -->
+    <p class="tool-info" id="toolInfo" aria-live="polite"><span id="toolInfoDesc">&nbsp;</span></p>
   </div>
 </section>
 
@@ -31,7 +25,6 @@
 <section class="plans" id="plans">
   <div class="container">
     <div class="section-head">
-      <h2 class="section-title">پلن‌های اشتراک</h2>
       <p class="section-sub">پلن مناسب خود را انتخاب کنید و بلافاصله وارد فرایند خرید شوید.</p>
     </div>
     <div class="plans__grid" id="plansGrid" aria-live="polite">

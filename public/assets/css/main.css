@@ -123,8 +123,8 @@ input { font-family: inherit; }
 .navbar__burger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
 
 /* ---------- Hero ---------- */
-.hero { padding: 60px 0 40px; }
-.hero__head { text-align: center; max-width: 760px; margin-inline: auto; margin-bottom: 48px; }
+.hero { padding: 56px 0 14px; }
+.hero__head { text-align: center; max-width: 760px; margin-inline: auto; margin-bottom: 40px; }
 .hero__eyebrow {
   display: inline-block; padding: 6px 16px; border-radius: 999px;
   background: var(--surface-2); border: 1px solid var(--border);
@@ -158,23 +158,20 @@ input { font-family: inherit; }
 .carousel__progress { width: 180px; height: 4px; margin: 26px auto 0; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
 .carousel__bar { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 999px; }
 
-/* Tool info */
+/* Tool info — single line description under the carousel */
 .tool-info {
-  display: flex; align-items: center; gap: 20px; justify-content: center; text-align: center;
-  max-width: 640px; margin: 36px auto 0; padding: 20px; border-radius: var(--radius); transition: opacity 0.4s;
+  max-width: 620px; margin: 14px auto 0; padding: 0 16px; text-align: center;
+  color: var(--text-dim); font-size: 0.98rem; line-height: 1.7;
+  transition: opacity 0.35s var(--ease); min-height: 1.7em;
 }
 .tool-info.is-fading { opacity: 0; }
-.tool-info__logo { width: 64px; height: 64px; border-radius: 18px; flex: 0 0 auto; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; overflow: hidden; }
-.tool-info__logo img { width: 46px; height: 46px; }
-.tool-info__text { text-align: right; }
-.tool-info__name { font-size: 1.4rem; font-weight: 800; }
-.tool-info__desc { color: var(--text-dim); font-size: 0.95rem; margin-top: 4px; }
 
 /* ---------- Sections ---------- */
-.section-head { text-align: center; margin-bottom: 40px; }
+.section-head { text-align: center; margin-bottom: 26px; }
 .section-title { font-size: clamp(1.5rem, 4vw, 2.3rem); font-weight: 800; }
-.section-sub { color: var(--text-dim); margin-top: 10px; }
-.plans, .steps, .faq { padding: 70px 0; }
+.section-sub { color: var(--text-dim); font-size: 1.05rem; }
+.steps, .faq { padding: 70px 0; }
+.plans { padding: 22px 0 64px; }
 
 /* ---------- Plans ---------- */
 .plans__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
@@ -184,18 +181,34 @@ input { font-family: inherit; }
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
   cursor: pointer; display: flex; flex-direction: column; gap: 14px;
 }
-.plan-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: rgba(66,165,255,0.3); }
-.plan-card.is-selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent), var(--shadow-glow); }
-.plan-card__check { position: absolute; top: 16px; left: 16px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; display: none; place-items: center; font-size: 0.8rem; }
+/* Tool-color tinted surface + top accent line */
+.plan-card { --tc: var(--tool-color, var(--accent)); }
+.plan-card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--tc); opacity: 0.55; transition: opacity 0.35s var(--ease);
+}
+.plan-card:hover {
+  transform: translateY(-8px); box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--tc) 55%, transparent);
+}
+.plan-card:hover::before { opacity: 1; }
+.plan-card.is-selected {
+  border-color: var(--tc);
+  box-shadow: 0 0 0 2px var(--tc), 0 10px 44px color-mix(in srgb, var(--tc) 40%, transparent);
+}
+.plan-card.is-selected { background: color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.plan-card__check { position: absolute; top: 16px; left: 16px; width: 26px; height: 26px; border-radius: 50%; background: var(--tc); color: #fff; display: none; place-items: center; font-size: 0.8rem; }
 .plan-card.is-selected .plan-card__check { display: grid; }
-.plan-card__badge { position: absolute; top: -12px; right: 20px; padding: 5px 14px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: linear-gradient(120deg, var(--primary), var(--accent)); color: #fff; box-shadow: 0 6px 16px rgba(0,118,250,0.4); }
+.plan-card__badge { position: absolute; top: -12px; right: 20px; padding: 5px 14px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: var(--tc); color: #fff; box-shadow: 0 6px 16px color-mix(in srgb, var(--tc) 50%, transparent); }
+.plan-card__tool { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: color-mix(in srgb, var(--tc) 14%, var(--surface-2)); border: 1px solid color-mix(in srgb, var(--tc) 35%, transparent); }
+.plan-card__tool img { width: 32px; height: 32px; }
 .plan-card__name { font-size: 1.25rem; font-weight: 800; }
 .plan-card__duration { color: var(--text-dim); font-size: 0.9rem; }
 .plan-card__price { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; }
 .plan-card__irt { font-size: 1.7rem; font-weight: 800; color: var(--text); }
 .plan-card__irt-unit { color: var(--text-dim); font-size: 0.85rem; }
-.plan-card__usdt { font-size: 0.85rem; color: var(--accent); }
-.plan-card__cta { margin-top: auto; }
+.plan-card__usdt { font-size: 0.85rem; color: var(--tc); }
+.plan-card__cta { margin-top: auto; background: var(--tc); box-shadow: 0 10px 30px color-mix(in srgb, var(--tc) 40%, transparent); }
 
 /* ---------- Ticker ---------- */
 .ticker { padding: 30px 0; }

@@ -9,34 +9,29 @@
     return null;
   }
 
-  /* ---------- Tool info ---------- */
+  /* ---------- Tool info (single-line description) ---------- */
   function updateToolInfo(tool) {
     var box = document.getElementById("toolInfo");
-    var logo = document.getElementById("toolInfoLogo");
-    var name = document.getElementById("toolInfoName");
     var desc = document.getElementById("toolInfoDesc");
-    if (!box || !tool) return;
+    if (!box || !desc || !tool) return;
 
-    var color = tool.color || "#42A5FF";
     box.classList.add("is-fading");
     setTimeout(function () {
-      logo.classList.remove("skeleton");
-      logo.style.setProperty("--tool-color", color);
-      logo.style.borderColor = color;
-      logo.innerHTML = '<img src="' + tool.logo + '" alt="' + tool.name + '" width="46" height="46">';
-      name.textContent = tool.name;
       desc.textContent = tool.description || "";
       box.classList.remove("is-fading");
     }, 220);
   }
 
   /* ---------- Plans ---------- */
-  function planCardHTML(plan) {
+  function planCardHTML(plan, tool) {
+    var color = (tool && tool.color) || "#42A5FF";
+    var logo = (tool && tool.logo) || "";
     var badge = plan.badge ? '<span class="plan-card__badge">' + plan.badge + "</span>" : "";
     return (
-      '<article class="plan-card" data-plan-id="' + plan.id + '" tabindex="0">' +
+      '<article class="plan-card" data-plan-id="' + plan.id + '" tabindex="0" style="--tool-color:' + color + '">' +
         badge +
         '<span class="plan-card__check">✓</span>' +
+        '<span class="plan-card__tool"><img src="' + logo + '" alt="' + (tool ? tool.name : "") + '" width="36" height="36"></span>' +
         '<h3 class="plan-card__name">' + plan.name + "</h3>" +
         '<span class="plan-card__duration">' + plan.duration + "</span>" +
         '<div class="plan-card__price">' +
@@ -56,7 +51,7 @@
       grid.innerHTML = '<p class="section-sub" style="grid-column:1/-1;text-align:center">پلنی برای این ابزار موجود نیست.</p>';
       return;
     }
-    grid.innerHTML = plans.map(planCardHTML).join("");
+    grid.innerHTML = plans.map(function (p) { return planCardHTML(p, tool); }).join("");
 
     Array.prototype.forEach.call(grid.querySelectorAll(".plan-card"), function (card) {
       var id = Number(card.getAttribute("data-plan-id"));
