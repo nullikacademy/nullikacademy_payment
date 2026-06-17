@@ -32,7 +32,7 @@
         badge +
         '<span class="plan-card__check">✓</span>' +
         '<span class="plan-card__tool"><img src="' + logo + '" alt="' + (tool ? tool.name : "") + '" width="36" height="36"></span>' +
-        '<h3 class="plan-card__name">' + plan.name + "</h3>" +
+        '<h3 class="plan-card__name">' + ((tool ? tool.name + " " : "") + plan.name) + "</h3>" +
         '<span class="plan-card__duration">' + plan.duration + "</span>" +
         '<div class="plan-card__price">' +
           '<span class="plan-card__irt">' + plan.price_irt_formatted + "</span>" +

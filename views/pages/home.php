@@ -24,9 +24,6 @@
 <!-- ============ PLANS ============ -->
 <section class="plans" id="plans">
   <div class="container">
-    <div class="section-head">
-      <p class="section-sub">پلن مناسب خود را انتخاب کنید و بلافاصله وارد فرایند خرید شوید.</p>
-    </div>
     <div class="plans__grid" id="plansGrid" aria-live="polite">
       <!-- skeletons -->
       <div class="plan-card skeleton-card"></div>
