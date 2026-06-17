@@ -103,6 +103,7 @@
     'name' => $t['name'],
     'slug' => $t['slug'],
     'logo' => asset('images/' . $t['logo']),
+    'color' => $t['color'] ?? '#0076FA',
     'description' => $t['description'],
 ], $tools), JSON_UNESCAPED_UNICODE) ?>
 </script>

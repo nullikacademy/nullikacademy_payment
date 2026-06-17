@@ -33,7 +33,10 @@
       active = (index + items.length) % items.length;
       center(active);
       var slug = items[active].getAttribute("data-slug");
-      window.dispatchEvent(new CustomEvent("nullik:tool-change", { detail: { slug: slug } }));
+      // Tint the progress bar with the active tool's color.
+      var color = items[active].style.getPropertyValue("--tool-color");
+      if (bar && color) { bar.style.background = color; }
+      window.dispatchEvent(new CustomEvent("nullik:tool-change", { detail: { slug: slug, color: color } }));
       if (fromUser) { elapsed = 0; startTs = performance.now(); }
     }
 

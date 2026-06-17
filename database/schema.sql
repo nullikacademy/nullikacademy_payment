@@ -209,4 +209,8 @@ CREATE TABLE IF NOT EXISTS sms_logs (
     KEY idx_sms_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ---------- 0013_add_color_to_tools.sql ----------
+ALTER TABLE tools
+    ADD COLUMN color VARCHAR(32) NOT NULL DEFAULT '#0076FA' AFTER logo;
+
 SET FOREIGN_KEY_CHECKS=1;

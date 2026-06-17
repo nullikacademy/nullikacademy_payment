@@ -21,6 +21,7 @@ final class ToolController extends Controller
                 'name'        => $t['name'],
                 'slug'        => $t['slug'],
                 'logo'        => asset('images/' . ($t['logo'] ?? 'tools/default.svg')),
+                'color'       => $t['color'] ?? '#0076FA',
                 'description' => $t['description'],
             ];
         }, Tool::active());
@@ -40,6 +41,7 @@ final class ToolController extends Controller
             'name'        => $tool['name'],
             'slug'        => $tool['slug'],
             'logo'        => asset('images/' . $tool['logo']),
+            'color'       => $tool['color'] ?? '#0076FA',
             'description' => $tool['description'],
         ]]);
     }

@@ -17,9 +17,12 @@
     var desc = document.getElementById("toolInfoDesc");
     if (!box || !tool) return;
 
+    var color = tool.color || "#42A5FF";
     box.classList.add("is-fading");
     setTimeout(function () {
       logo.classList.remove("skeleton");
+      logo.style.setProperty("--tool-color", color);
+      logo.style.borderColor = color;
       logo.innerHTML = '<img src="' + tool.logo + '" alt="' + tool.name + '" width="46" height="46">';
       name.textContent = tool.name;
       desc.textContent = tool.description || "";

@@ -146,8 +146,11 @@ input { font-family: inherit; }
   background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: 0.5s var(--ease);
 }
 .carousel__item.is-active .carousel__logo {
-  border-color: var(--border-strong);
-  box-shadow: 0 0 0 4px rgba(66,165,255,0.18), var(--shadow-glow);
+  border-color: var(--tool-color, var(--border-strong));
+  box-shadow: 0 0 0 4px rgba(66,165,255,0.18), var(--shadow-glow); /* fallback */
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--tool-color, #42A5FF) 38%, transparent),
+    0 10px 44px color-mix(in srgb, var(--tool-color, #42A5FF) 50%, transparent);
 }
 .carousel__logo img { width: 70px; height: 70px; }
 .carousel__label { font-size: 0.85rem; font-weight: 600; color: var(--text-dim); }

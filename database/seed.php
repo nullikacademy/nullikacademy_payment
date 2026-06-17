@@ -58,35 +58,35 @@ fwrite(STDOUT, "✔ Settings seeded.\n");
 
 /* ---------------- Tools ---------------- */
 $tools = [
-    ['ChatGPT', 'chatgpt', 'دسترسی کامل به مدل‌های پیشرفته GPT برای نگارش، کدنویسی و تحلیل.'],
-    ['Claude', 'claude', 'دستیار هوش مصنوعی Anthropic با درک عمیق و پاسخ‌های دقیق و طولانی.'],
-    ['Gemini', 'gemini', 'مدل چندوجهی گوگل برای متن، تصویر و استدلال پیشرفته.'],
-    ['Higgsfield', 'higgsfield', 'تولید ویدیوهای سینمایی و خلاقانه با هوش مصنوعی.'],
-    ['Midjourney', 'midjourney', 'خلق تصاویر هنری و فوق‌واقع‌گرایانه با کیفیت بی‌نظیر.'],
-    ['Perplexity', 'perplexity', 'موتور پاسخ‌گوی هوشمند با ارجاع به منابع معتبر و به‌روز.'],
-    ['Cursor', 'cursor', 'ویرایشگر کد مجهز به هوش مصنوعی برای توسعه‌دهندگان حرفه‌ای.'],
-    ['Bolt', 'bolt', 'ساخت اپلیکیشن‌های فول‌استک تنها با یک پرامپت.'],
-    ['Lovable', 'lovable', 'تبدیل ایده به وب‌اپلیکیشن کامل بدون نیاز به کدنویسی.'],
-    ['Runway', 'runway', 'استودیوی ویدیوی هوش مصنوعی برای ساخت و ویرایش حرفه‌ای.'],
-    ['ElevenLabs', 'elevenlabs', 'تبدیل متن به گفتار طبیعی و کلون صدا با کیفیت استودیویی.'],
-    ['Suno', 'suno', 'ساخت موسیقی و آهنگ کامل با خواننده هوش مصنوعی.'],
-    ['HeyGen', 'heygen', 'تولید ویدیوهای آواتار و دوبله چندزبانه با هوش مصنوعی.'],
-    ['Canva AI', 'canva-ai', 'ابزارهای طراحی هوشمند Canva برای ساخت محتوای حرفه‌ای.'],
-    ['Notion AI', 'notion-ai', 'دستیار هوشمند Notion برای نوشتن، خلاصه‌سازی و سازماندهی.'],
-    ['DeepSeek', 'deepseek', 'مدل‌های زبانی قدرتمند و مقرون‌به‌صرفه برای کدنویسی و استدلال.'],
+    ['ChatGPT', 'chatgpt', 'دسترسی کامل به مدل‌های پیشرفته GPT برای نگارش، کدنویسی و تحلیل.', '#10A37F'],
+    ['Claude', 'claude', 'دستیار هوش مصنوعی Anthropic با درک عمیق و پاسخ‌های دقیق و طولانی.', '#D97757'],
+    ['Gemini', 'gemini', 'مدل چندوجهی گوگل برای متن، تصویر و استدلال پیشرفته.', '#1A73E8'],
+    ['Higgsfield', 'higgsfield', 'تولید ویدیوهای سینمایی و خلاقانه با هوش مصنوعی.', '#7C3AED'],
+    ['Midjourney', 'midjourney', 'خلق تصاویر هنری و فوق‌واقع‌گرایانه با کیفیت بی‌نظیر.', '#3B82F6'],
+    ['Perplexity', 'perplexity', 'موتور پاسخ‌گوی هوشمند با ارجاع به منابع معتبر و به‌روز.', '#20808D'],
+    ['Cursor', 'cursor', 'ویرایشگر کد مجهز به هوش مصنوعی برای توسعه‌دهندگان حرفه‌ای.', '#4B5563'],
+    ['Bolt', 'bolt', 'ساخت اپلیکیشن‌های فول‌استک تنها با یک پرامپت.', '#2563EB'],
+    ['Lovable', 'lovable', 'تبدیل ایده به وب‌اپلیکیشن کامل بدون نیاز به کدنویسی.', '#FF4D6D'],
+    ['Runway', 'runway', 'استودیوی ویدیوی هوش مصنوعی برای ساخت و ویرایش حرفه‌ای.', '#22D3EE'],
+    ['ElevenLabs', 'elevenlabs', 'تبدیل متن به گفتار طبیعی و کلون صدا با کیفیت استودیویی.', '#6366F1'],
+    ['Suno', 'suno', 'ساخت موسیقی و آهنگ کامل با خواننده هوش مصنوعی.', '#F59E0B'],
+    ['HeyGen', 'heygen', 'تولید ویدیوهای آواتار و دوبله چندزبانه با هوش مصنوعی.', '#5B5BFF'],
+    ['Canva AI', 'canva-ai', 'ابزارهای طراحی هوشمند Canva برای ساخت محتوای حرفه‌ای.', '#00C4CC'],
+    ['Notion AI', 'notion-ai', 'دستیار هوشمند Notion برای نوشتن، خلاصه‌سازی و سازماندهی.', '#9CA3AF'],
+    ['DeepSeek', 'deepseek', 'مدل‌های زبانی قدرتمند و مقرون‌به‌صرفه برای کدنویسی و استدلال.', '#4D6BFE'],
 ];
 
 $toolIds = [];
 $order = 0;
-foreach ($tools as [$name, $slug, $desc]) {
+foreach ($tools as [$name, $slug, $desc, $color]) {
     $existing = Database::selectOne('SELECT id FROM tools WHERE slug = ?', [$slug]);
     if ($existing) {
         $toolIds[$slug] = (int) $existing['id'];
         continue;
     }
     $id = Database::insert(
-        'INSERT INTO tools (name, slug, logo, description, sort_order, status) VALUES (?, ?, ?, ?, ?, ?)',
-        [$name, $slug, "tools/{$slug}.svg", $desc, $order++, 'active']
+        'INSERT INTO tools (name, slug, logo, color, description, sort_order, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [$name, $slug, "tools/{$slug}.svg", $color, $desc, $order++, 'active']
     );
     $toolIds[$slug] = $id;
 }

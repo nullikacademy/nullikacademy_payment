@@ -129,11 +129,24 @@
   function initTools() {
     var form = $("toolForm");
     if (!form) return;
+    var colorText = $("toolColor");
+    var colorPicker = $("toolColorPicker");
+
+    // Keep the color picker and the text field in sync.
+    function isHex(v) { return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v); }
+    if (colorPicker) {
+      on(colorPicker, "input", function () { colorText.value = colorPicker.value; });
+      on(colorText, "input", function () { if (isHex(colorText.value)) colorPicker.value = colorText.value; });
+    }
+
     function fill(data) {
       $("toolId").value = data.id || "";
       $("toolName").value = data.name || "";
       $("toolSlug").value = data.slug || "";
       $("toolDesc").value = data.description || "";
+      var color = data.color || "#0076FA";
+      colorText.value = color;
+      if (colorPicker && isHex(color)) colorPicker.value = color;
       $("toolSort").value = data.sort_order || 0;
       $("toolStatus").value = data.status || "active";
       $("toolModalTitle").textContent = data.id ? "ویرایش ابزار" : "ابزار جدید";

@@ -49,6 +49,7 @@ final class ToolController extends Controller
             'slug'        => $data['slug'],
             'description' => $data['description'] ?? '',
             'logo'        => $logo ?? 'tools/default.svg',
+            'color'       => $data['color'] ?: '#0076FA',
             'sort_order'  => (int) ($data['sort_order'] ?? 0),
             'status'      => $data['status'] ?? 'active',
         ]);
@@ -74,6 +75,7 @@ final class ToolController extends Controller
             'name'        => $data['name'],
             'slug'        => $data['slug'],
             'description' => $data['description'] ?? '',
+            'color'       => $data['color'] ?: '#0076FA',
             'sort_order'  => (int) ($data['sort_order'] ?? 0),
             'status'      => $data['status'] ?? 'active',
         ];
@@ -113,10 +115,12 @@ final class ToolController extends Controller
             'name'        => 'required|max:120',
             'slug'        => 'required|max:140|regex:/^[a-z0-9\-]+$/',
             'description' => 'max:2000',
+            'color'       => 'max:32|regex:/^(#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})|rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)|rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*(0|1|0?\.\d+)\s*\))$/',
             'sort_order'  => 'integer',
             'status'      => 'in:active,inactive',
         ], [
-            'slug.regex' => 'اسلاگ فقط می‌تواند شامل حروف کوچک انگلیسی، عدد و خط تیره باشد.',
+            'slug.regex'  => 'اسلاگ فقط می‌تواند شامل حروف کوچک انگلیسی، عدد و خط تیره باشد.',
+            'color.regex' => 'کد رنگ معتبر نیست. مثال: #42A5FF یا rgb(66,165,255)',
         ]);
     }
 

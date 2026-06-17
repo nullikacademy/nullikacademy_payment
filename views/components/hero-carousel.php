@@ -6,6 +6,7 @@
             class="carousel__item<?= $i === 0 ? ' is-active' : '' ?>"
             data-index="<?= (int) $i ?>"
             data-slug="<?= e($tool['slug']) ?>"
+            style="--tool-color: <?= e($tool['color'] ?? '#0076FA') ?>"
             aria-label="<?= e($tool['name']) ?>">
       <span class="carousel__logo">
         <img src="<?= e(asset('images/' . $tool['logo'])) ?>" alt="<?= e($tool['name']) ?>" loading="lazy" width="96" height="96">

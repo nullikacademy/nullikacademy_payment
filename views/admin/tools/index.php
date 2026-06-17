@@ -13,16 +13,18 @@
 
 <div class="table-wrap glass">
   <table class="table">
-    <thead><tr><th>لوگو</th><th>نام</th><th>اسلاگ</th><th>ترتیب</th><th>وضعیت</th><th></th></tr></thead>
+    <thead><tr><th>لوگو</th><th>نام</th><th>اسلاگ</th><th>رنگ</th><th>ترتیب</th><th>وضعیت</th><th></th></tr></thead>
     <tbody>
-      <?php foreach ($tools as $t): ?>
+      <?php foreach ($tools as $t): $color = $t['color'] ?? '#0076FA'; ?>
       <tr data-tool='<?= e(json_encode([
           'id' => (int) $t['id'], 'name' => $t['name'], 'slug' => $t['slug'],
-          'description' => $t['description'], 'sort_order' => (int) $t['sort_order'], 'status' => $t['status'],
+          'description' => $t['description'], 'color' => $color,
+          'sort_order' => (int) $t['sort_order'], 'status' => $t['status'],
       ], JSON_UNESCAPED_UNICODE)) ?>'>
         <td><img src="<?= e(asset('images/' . ($t['logo'] ?: 'tools/default.svg'))) ?>" alt="" width="40" height="40" style="border-radius:10px"></td>
         <td><?= e($t['name']) ?></td>
         <td dir="ltr"><?= e($t['slug']) ?></td>
+        <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:5px;border:1px solid var(--border);background:<?= e($color) ?>"></span><span dir="ltr" style="font-size:0.78rem;color:var(--text-mute)"><?= e($color) ?></span></span></td>
         <td><?= e(to_persian_digits((string) $t['sort_order'])) ?></td>
         <td>
           <button class="badge badge--toggle badge--<?= $t['status'] === 'active' ? 'approved' : 'rejected' ?>"
@@ -57,6 +59,13 @@
       <div class="field"><label class="field__label">نام</label><input class="input" name="name" id="toolName" required></div>
       <div class="field"><label class="field__label">اسلاگ (انگلیسی)</label><input class="input" name="slug" id="toolSlug" dir="ltr" required></div>
       <div class="field"><label class="field__label">توضیحات</label><textarea class="input" name="description" id="toolDesc" rows="3"></textarea></div>
+      <div class="field">
+        <label class="field__label">رنگ ابزار (برای درخشش کاروسل)</label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="color" id="toolColorPicker" value="#0076FA" style="width:48px;height:44px;padding:4px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);cursor:pointer">
+          <input class="input" name="color" id="toolColor" dir="ltr" placeholder="#0076FA یا rgb(0,118,250)" value="#0076FA" style="flex:1">
+        </div>
+      </div>
       <div class="field-row">
         <div class="field"><label class="field__label">ترتیب</label><input class="input" type="number" name="sort_order" id="toolSort" value="0"></div>
         <div class="field"><label class="field__label">وضعیت</label>
