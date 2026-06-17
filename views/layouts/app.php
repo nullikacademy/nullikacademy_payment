@@ -42,6 +42,7 @@ $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
     <link rel="stylesheet" href="<?= e(asset('css/main.css')) ?>">
+    <link rel="stylesheet" href="<?= e(asset('css/checkout.css')) ?>">
 
     <!-- Schema.org -->
     <script type="application/ld+json">

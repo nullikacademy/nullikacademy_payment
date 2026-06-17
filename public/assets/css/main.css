@@ -291,5 +291,3 @@ input { font-family: inherit; }
 }
 .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(66,165,255,0.18); }
 .input::placeholder { color: var(--text-mute); }
-
-@import url("checkout.css");
