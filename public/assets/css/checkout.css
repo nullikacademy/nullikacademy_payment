@@ -109,6 +109,9 @@
   background: radial-gradient(closest-side, rgba(66,165,255,0.14), transparent); pointer-events: none;
 }
 .bank-card__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; position: relative; z-index: 1; }
+.bank-card__logo { width: auto; display: block; }
+.bank-card__logo--bank { height: 48px; }
+.bank-card__logo--shetab { height: 24px; }
 .bank-card__row { display: flex; flex-direction: column; gap: 7px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 1; }
 .bank-card__label { font-size: 0.78rem; color: rgba(234,241,255,0.5); }
 .bank-card__value { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; color: #EAF1FF; }

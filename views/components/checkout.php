@@ -139,8 +139,8 @@ $flag = asset('images/iran-flag.svg');
         <!-- Pasargad-inspired premium card -->
         <div class="bank-card">
           <div class="bank-card__top">
-            <img src="<?= e(asset('images/pasargad.svg')) ?>" alt="بانک پاسارگاد" height="36">
-            <img src="<?= e(asset('images/shetab.svg')) ?>" alt="شتاب" height="36">
+            <img class="bank-card__logo bank-card__logo--bank" src="<?= e(asset('images/pasargad.png')) ?>" alt="بانک پاسارگاد" height="48">
+            <img class="bank-card__logo bank-card__logo--shetab" src="<?= e(asset('images/shetab.svg')) ?>" alt="شتاب" height="24">
           </div>
           <div class="bank-card__row">
             <span class="bank-card__label">شماره کارت</span>
