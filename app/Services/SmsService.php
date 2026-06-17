@@ -57,25 +57,26 @@ final class SmsService
             return false;
         }
 
+        // IPPanel edge API (https://edge.ippanel.com/v1/api/send):
+        // raw API key as Authorization header, pattern body shape below.
+        $url = (string) $cfg['send_url'];
         $payload = [
-            'code'      => $patternCode,
-            'sender'    => $cfg['sender'],
-            'recipient' => $recipient,
-            'variable'  => (object) $variables,
+            'sending_type' => 'pattern',
+            'from_number'  => $cfg['sender'],
+            'code'         => $patternCode,
+            'recipients'   => [$recipient],
+            'params'       => (object) $variables,
         ];
 
-        $response = Http::postJson(
-            $cfg['base_url'] . '/sms/pattern/normal/send',
-            $payload,
-            ['Authorization' => 'AccessKey ' . $cfg['api_key']]
-        );
+        $response = Http::postJson($url, $payload, ['Authorization' => $cfg['api_key']]);
 
-        $ok = $response['ok'] && (($response['json']['status'] ?? '') !== 'ERROR');
+        // edge API signals success via meta.status === true.
+        $ok = $response['ok'] && (($response['json']['meta']['status'] ?? false) === true);
 
         // Persist full transport detail so failures are diagnosable
         // (HTTP status + curl error + raw body), not just an empty body.
         $detail = json_encode([
-            'endpoint' => $cfg['base_url'] . '/sms/pattern/normal/send',
+            'endpoint' => $url,
             'status'   => $response['status'],
             'curl'     => $response['error'],
             'body'     => $response['body'],

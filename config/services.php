@@ -8,6 +8,7 @@ return [
     'ippanel' => [
         'api_key'        => Env::get('IPPANEL_API_KEY', ''),
         'base_url'       => rtrim((string) Env::get('IPPANEL_BASE_URL', 'https://api.ippanel.com/v1'), '/'),
+        'send_url'       => Env::get('IPPANEL_SEND_URL', 'https://edge.ippanel.com/v1/api/send'),
         'sender'         => Env::get('IPPANEL_SENDER', ''),
         'pattern_otp'    => Env::get('IPPANEL_PATTERN_OTP', ''),
         'pattern_order_user'  => Env::get('IPPANEL_PATTERN_ORDER_USER', ''),
