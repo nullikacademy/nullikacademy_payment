@@ -1,7 +1,5 @@
 <?php /** @var array $ticker */ ?>
-<section class="ticker" id="usdtTicker"
-         data-price="<?= e((string) $ticker['price']) ?>"
-         data-change="<?= e((string) $ticker['change_percent_24']) ?>">
+<section class="ticker" id="usdtTicker" data-price="<?= e((string) $ticker['price']) ?>">
   <div class="container">
     <div class="ticker__card glass">
       <div class="ticker__head">
@@ -16,10 +14,6 @@
       <div class="ticker__now">
         <span class="ticker__value" id="tkPrice" data-value="<?= e((string) $ticker['price']) ?>">۰</span>
         <span class="ticker__unit">تومان</span>
-      </div>
-      <div class="ticker__change-line">
-        <span class="ticker__change-label">تغییر ۲۴ ساعته:</span>
-        <span class="ticker__change" id="tkChange">۰٪</span>
       </div>
     </div>
   </div>

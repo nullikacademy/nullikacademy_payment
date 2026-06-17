@@ -129,3 +129,14 @@
   .admin-topbar__burger { display: block; }
   .field-row { grid-template-columns: 1fr; }
 }
+
+/* ---------- Password input (admin login / forms) ---------- */
+.password-input { position: relative; }
+.password-input .input { padding-inline-start: 16px; padding-inline-end: 46px; }
+.password-input__toggle { position: absolute; inset-inline-end: 12px; top: 50%; transform: translateY(-50%); display: inline-flex; color: var(--text-dim); opacity: 0.8; background: none; border: none; cursor: pointer; }
+.password-input__toggle:hover { opacity: 1; color: var(--text); }
+
+/* Stat icon uses accent color for the inline SVG */
+.stat-card__icon { color: var(--accent); }
+.stat-card--success .stat-card__icon { color: var(--success); }
+.stat-card--warning .stat-card__icon { color: var(--warning); }

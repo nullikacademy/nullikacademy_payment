@@ -4,7 +4,7 @@
 
   var el = {};
   var current = 1;
-  var totalSteps = 5;
+  var totalSteps = 6;
   var plan = null;
   var tool = null;
   var resendTimer = null;
@@ -15,24 +15,23 @@
     el.modal = $("checkout");
     el.body = document.body;
     el.steps = Array.prototype.slice.call(el.modal.querySelectorAll(".cstep"));
-    el.progSteps = Array.prototype.slice.call(el.modal.querySelectorAll(".progress-step"));
-    el.progLine = $("progressLine");
-    el.chip = $("checkoutChip");
-    // step1
+    el.segs = Array.prototype.slice.call(el.modal.querySelectorAll(".progress-seg"));
+    // step 1
     el.mobileInput = $("mobileInput");
     el.sendOtpBtn = $("sendOtpBtn");
-    el.otpBlock = $("otpBlock");
+    // step 2
     el.otpInputs = $("otpInputs");
     el.otpBoxes = Array.prototype.slice.call(el.otpInputs.querySelectorAll(".otp-box"));
     el.otpMobileLabel = $("otpMobileLabel");
     el.resendBtn = $("resendOtpBtn");
     el.editMobileBtn = $("editMobileBtn");
     el.countdown = $("otpCountdown");
-    // step2
+    // step 3
     el.firstName = $("firstNameInput");
     el.lastName = $("lastNameInput");
     el.personalNext = $("personalNextBtn");
-    // step3
+    // step 4
+    el.accountTitle = $("accountTitle");
     el.email = $("emailInput");
     el.password = $("passwordInput");
     el.passwordField = $("passwordField");
@@ -40,11 +39,11 @@
     el.orgField = $("orgField");
     el.org = $("orgInput");
     el.accountNext = $("accountNextBtn");
-    // step4
+    // step 5
     el.reviewCard = $("reviewCard");
     el.payNote = $("payNote");
     el.paidBtn = $("paidBtn");
-    // step5
+    // step 6
     el.uploader = $("uploader");
     el.receiptInput = $("receiptInput");
     el.placeholder = $("uploaderPlaceholder");
@@ -58,24 +57,22 @@
     el.steps.forEach(function (s) {
       s.classList.toggle("is-active", Number(s.getAttribute("data-step")) === current);
     });
-    el.progSteps.forEach(function (p) {
-      var n = Number(p.getAttribute("data-step"));
-      p.classList.toggle("is-active", n === current);
-      p.classList.toggle("is-done", n < current);
+    el.segs.forEach(function (seg) {
+      var n = Number(seg.getAttribute("data-seg"));
+      seg.classList.toggle("is-active", n === current);
+      seg.classList.toggle("is-done", n < current);
     });
-    el.progLine.style.width = ((current - 1) / (totalSteps - 1) * 100) + "%";
     el.modal.querySelector(".checkout__dialog").scrollTop = 0;
   }
 
   function open(selectedPlan, selectedTool) {
     plan = selectedPlan; tool = selectedTool;
-    el.chip.innerHTML = tool.name + " — <b>" + plan.name + "</b> · " + plan.price_irt_formatted + " تومان";
 
-    // Configure account step based on plan mode.
     var isOrg = plan.mode_type === "organization_id";
     el.passwordField.hidden = isOrg;
     el.orgField.hidden = !isOrg;
 
+    el.accountTitle.textContent = "اطلاعات حساب " + tool.name + " خود را وارد کنید";
     el.payNote.textContent = "لطفا مبلغ " + plan.price_irt_formatted +
       " تومان به شماره کارت یا شماره شبای زیر واریز نمایید.";
 
@@ -83,10 +80,9 @@
     el.modal.setAttribute("aria-hidden", "false");
     el.body.classList.add("is-locked");
 
-    // If mobile already verified this session, skip to step 2.
     if (NULLIK.state.verifiedMobile) {
       el.mobileInput.value = UI.toPersian(NULLIK.state.verifiedMobile);
-      goto(2);
+      goto(3); // skip mobile + otp
     } else {
       goto(1);
     }
@@ -98,10 +94,8 @@
     el.body.classList.remove("is-locked");
   }
 
-  /* ---------- Step 1: mobile + OTP ---------- */
-  function validMobile(v) {
-    return /^(?:0|98|\+98)?9\d{9}$/.test(v);
-  }
+  /* ---------- Step 1: mobile ---------- */
+  function validMobile(v) { return /^(?:0|98|\+98)?9\d{9}$/.test(v); }
   function normalizeMobile(v) {
     v = UI.toEnglish(v).replace(/\D/g, "");
     if (v.indexOf("98") === 0 && v.length === 12) v = "0" + v.slice(2);
@@ -111,10 +105,7 @@
 
   function sendOtp(resend) {
     var raw = UI.toEnglish(el.mobileInput.value).replace(/\D/g, "");
-    if (!validMobile(raw)) {
-      UI.setError("mobileError", "شماره موبایل معتبر نیست.");
-      return;
-    }
+    if (!validMobile(raw)) { UI.setError("mobileError", "شماره موبایل معتبر نیست."); return; }
     UI.setError("mobileError", "");
     var mobile = normalizeMobile(raw);
     var btn = resend ? el.resendBtn : el.sendOtpBtn;
@@ -125,19 +116,17 @@
       if (res.ok && res.data.success) {
         NULLIK.state.pendingMobile = mobile;
         el.otpMobileLabel.textContent = UI.toPersian(mobile);
-        el.otpBlock.hidden = false;
-        el.otpBoxes[0].focus();
         startCountdown(res.data.data.resend_cooldown || NULLIK.otp.cooldown);
+        if (!resend) { goto(2); el.otpBoxes[0].focus(); }
         UI.toast("کد تأیید ارسال شد", "success");
-        if (res.data.data.debug_code) {
-          UI.toast("کد تست: " + res.data.data.debug_code, "success");
-        }
+        if (res.data.data.debug_code) UI.toast("کد تست: " + res.data.data.debug_code, "success");
       } else {
         UI.setError("mobileError", res.data.message || "خطا در ارسال کد.");
       }
     });
   }
 
+  /* ---------- Step 2: OTP ---------- */
   function startCountdown(seconds) {
     clearInterval(resendTimer);
     var remaining = seconds;
@@ -146,10 +135,7 @@
     resendTimer = setInterval(function () {
       remaining--;
       el.countdown.textContent = UI.toPersian(remaining);
-      if (remaining <= 0) {
-        clearInterval(resendTimer);
-        el.resendBtn.disabled = false;
-      }
+      if (remaining <= 0) { clearInterval(resendTimer); el.resendBtn.disabled = false; }
     }, 1000);
   }
 
@@ -166,7 +152,7 @@
         el.otpInputs.classList.add("is-success");
         NULLIK.state.verifiedMobile = NULLIK.state.pendingMobile;
         UI.toast("شماره تأیید شد", "success");
-        setTimeout(function () { goto(2); }, 600);
+        setTimeout(function () { goto(3); }, 500);
       } else {
         el.otpInputs.classList.add("is-error");
         var msg = res.data.message || "کد نادرست است.";
@@ -194,29 +180,24 @@
       box.addEventListener("paste", function (e) {
         e.preventDefault();
         var text = UI.toEnglish((e.clipboardData || window.clipboardData).getData("text")).replace(/\D/g, "");
-        el.otpBoxes.forEach(function (b, j) {
-          b.value = text[j] || "";
-          b.classList.toggle("is-filled", !!text[j]);
-        });
+        el.otpBoxes.forEach(function (b, j) { b.value = text[j] || ""; b.classList.toggle("is-filled", !!text[j]); });
         if (text.length >= NULLIK.otp.length) verifyOtp();
       });
     });
   }
 
-  /* ---------- Step 2: personal ---------- */
-  function validateName(v) {
-    return /^[؀-ۿ\sA-Za-z‌]+$/.test(v.trim()) && v.trim().length > 0;
-  }
+  /* ---------- Step 3: personal ---------- */
+  function validateName(v) { return /^[؀-ۿ\sA-Za-z‌]+$/.test(v.trim()) && v.trim().length > 0; }
   function personalNext() {
     var ok = true;
     if (!validateName(el.firstName.value)) { UI.setError("firstNameError", "نام را به‌درستی وارد کنید."); ok = false; }
     else UI.setError("firstNameError", "");
     if (!validateName(el.lastName.value)) { UI.setError("lastNameError", "نام خانوادگی را به‌درستی وارد کنید."); ok = false; }
     else UI.setError("lastNameError", "");
-    if (ok) goto(3);
+    if (ok) goto(4);
   }
 
-  /* ---------- Step 3: account ---------- */
+  /* ---------- Step 4: account ---------- */
   function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
   function accountNext() {
     var ok = true;
@@ -230,10 +211,10 @@
       if (el.password.value.length < 4) { UI.setError("passwordError", "رمز عبور حداقل ۴ کاراکتر باشد."); ok = false; }
       else UI.setError("passwordError", "");
     }
-    if (ok) { buildReview(); goto(4); }
+    if (ok) { buildReview(); goto(5); }
   }
 
-  /* ---------- Step 4: review ---------- */
+  /* ---------- Step 5: review ---------- */
   function buildReview() {
     var rows = [
       ["ابزار", tool.name],
@@ -241,17 +222,14 @@
       ["مدت", plan.duration],
       ["ایمیل", el.email.value.trim()]
     ];
-    if (plan.mode_type === "organization_id") {
-      rows.push(["شناسه سازمانی", el.org.value.trim()]);
-    } else {
-      rows.push(["__password__", el.password.value]);
-    }
+    if (plan.mode_type === "organization_id") rows.push(["شناسه سازمانی", el.org.value.trim()]);
+    else rows.push(["__password__", el.password.value]);
 
     var html = rows.map(function (r) {
       if (r[0] === "__password__") {
         return '<div class="review-row"><span>رمز عبور</span>' +
           '<span class="review-row__pwd"><span id="reviewPwd" data-real="' + escapeHtml(r[1]) + '">••••••••</span>' +
-          '<button type="button" id="reviewPwdToggle" aria-label="نمایش رمز">👁</button></span></div>';
+          '<button type="button" id="reviewPwdToggle" aria-label="نمایش رمز">نمایش</button></span></div>';
       }
       return '<div class="review-row"><span>' + r[0] + "</span><span dir=\"auto\">" + escapeHtml(r[1]) + "</span></div>";
     }).join("");
@@ -268,6 +246,7 @@
         var shown = span.getAttribute("data-shown") === "1";
         span.textContent = shown ? "••••••••" : span.getAttribute("data-real");
         span.setAttribute("data-shown", shown ? "0" : "1");
+        toggle.textContent = shown ? "نمایش" : "مخفی";
       });
     }
   }
@@ -278,7 +257,7 @@
     });
   }
 
-  /* ---------- Step 5: receipt ---------- */
+  /* ---------- Step 6: receipt ---------- */
   function handleFile(file) {
     if (!file) return;
     var allowed = ["image/jpeg", "image/png", "image/webp"];
@@ -330,8 +309,7 @@
 
     API.post("order/create", payload).then(function (res) {
       if (res.ok && res.data.success) {
-        var num = res.data.data.order.order_number;
-        window.location.href = NULLIK.baseUrl + "/success/" + encodeURIComponent(num);
+        window.location.href = NULLIK.baseUrl + "/success/" + encodeURIComponent(res.data.data.order.order_number);
       } else {
         el.submitBtn.disabled = false;
         el.submitBtn.textContent = "ثبت نهایی سفارش";
@@ -358,9 +336,7 @@
   function bind() {
     el.sendOtpBtn.addEventListener("click", function () { sendOtp(false); });
     el.resendBtn.addEventListener("click", function () { sendOtp(true); });
-    el.editMobileBtn.addEventListener("click", function () {
-      el.otpBlock.hidden = true; clearInterval(resendTimer); el.mobileInput.focus();
-    });
+    el.editMobileBtn.addEventListener("click", function () { clearInterval(resendTimer); goto(1); el.mobileInput.focus(); });
     el.mobileInput.addEventListener("input", function () {
       el.mobileInput.value = UI.toPersian(UI.toEnglish(el.mobileInput.value).replace(/\D/g, "").slice(0, 11));
     });
@@ -369,13 +345,11 @@
     el.personalNext.addEventListener("click", personalNext);
     el.accountNext.addEventListener("click", accountNext);
     el.passwordToggle.addEventListener("click", function () {
-      var t = el.password.type === "password" ? "text" : "password";
-      el.password.type = t;
+      el.password.type = el.password.type === "password" ? "text" : "password";
     });
 
-    el.paidBtn.addEventListener("click", function () { goto(5); });
+    el.paidBtn.addEventListener("click", function () { goto(6); });
 
-    // Uploader
     el.uploader.addEventListener("click", function () { el.receiptInput.click(); });
     el.uploader.addEventListener("keydown", function (e) { if (e.key === "Enter") el.receiptInput.click(); });
     el.receiptInput.addEventListener("change", function () { handleFile(el.receiptInput.files[0]); });
@@ -391,11 +365,9 @@
 
     el.submitBtn.addEventListener("click", submitOrder);
 
-    // Prev buttons
     Array.prototype.forEach.call(el.modal.querySelectorAll("[data-prev]"), function (b) {
       b.addEventListener("click", function () { goto(current - 1); });
     });
-    // Close
     Array.prototype.forEach.call(el.modal.querySelectorAll("[data-checkout-close]"), function (b) {
       b.addEventListener("click", close);
     });
