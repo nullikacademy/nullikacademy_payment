@@ -99,7 +99,18 @@ final class Request
 
     public function header(string $key, ?string $default = null): ?string
     {
-        return $this->headers[$key] ?? $default;
+        // Exact match first, then case-insensitive (PHP title-cases header
+        // names, e.g. "X-CSRF-TOKEN" arrives as "X-Csrf-Token").
+        if (isset($this->headers[$key])) {
+            return $this->headers[$key];
+        }
+        $lower = strtolower($key);
+        foreach ($this->headers as $name => $value) {
+            if (strtolower($name) === $lower) {
+                return $value;
+            }
+        }
+        return $default;
     }
 
     public function bearerToken(): ?string
