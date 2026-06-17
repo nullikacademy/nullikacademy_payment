@@ -203,7 +203,8 @@ input { font-family: inherit; }
 .plan-card__irt { font-size: 1.7rem; font-weight: 800; color: var(--text); }
 .plan-card__irt-unit { color: var(--text-dim); font-size: 0.85rem; }
 .plan-card__usdt { font-size: 0.85rem; color: var(--tc); }
-.plan-card__cta { margin-top: auto; background: var(--tc); box-shadow: 0 10px 30px color-mix(in srgb, var(--tc) 40%, transparent); }
+.plan-card__cta { margin-top: auto; background: var(--tc); box-shadow: 0 10px 30px color-mix(in srgb, var(--tc) 42%, transparent); }
+.plan-card__cta:hover { background: var(--tc); box-shadow: 0 16px 40px color-mix(in srgb, var(--tc) 55%, transparent); }
 
 /* ---------- Ticker ---------- */
 .ticker { padding: 30px 0; }
