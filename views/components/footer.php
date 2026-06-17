@@ -8,8 +8,6 @@
     <nav class="footer__links" aria-label="پیوندها">
       <a href="#hero">خانه</a>
       <a href="#plans">پلن‌ها</a>
-      <a href="#steps">مراحل خرید</a>
-      <a href="#faq">سوالات متداول</a>
       <a href="<?= e((string) config('app.support_url')) ?>" target="_blank" rel="noopener">پشتیبانی تلگرام</a>
     </nav>
 

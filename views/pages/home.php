@@ -37,53 +37,6 @@
 <!-- ============ USDT TICKER ============ -->
 <?= $this->component('usdt-ticker', ['ticker' => $ticker]) ?>
 
-<!-- ============ STEPS ============ -->
-<section class="steps" id="steps">
-  <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">مراحل خرید</h2>
-      <p class="section-sub">تنها در چند گام ساده اشتراک خود را فعال کنید.</p>
-    </div>
-    <div class="steps__grid">
-      <?php foreach ([
-        ['۱', 'تأیید موبایل', 'شماره خود را وارد و با کد پیامکی تأیید کنید.'],
-        ['۲', 'اطلاعات شخصی', 'نام و نام خانوادگی خود را ثبت کنید.'],
-        ['۳', 'اطلاعات حساب', 'ایمیل و رمز یا شناسه سازمانی را وارد کنید.'],
-        ['۴', 'پرداخت', 'مبلغ را کارت‌به‌کارت کرده و رسید را بارگذاری کنید.'],
-        ['۵', 'تحویل', 'سفارش طی ۲۴ ساعت بررسی و فعال می‌شود.'],
-      ] as [$n, $t, $d]): ?>
-      <article class="step-card glass">
-        <span class="step-card__num"><?= e($n) ?></span>
-        <h3 class="step-card__title"><?= e($t) ?></h3>
-        <p class="step-card__desc"><?= e($d) ?></p>
-      </article>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FAQ ============ -->
-<section class="faq" id="faq">
-  <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">سوالات متداول</h2>
-    </div>
-    <div class="faq__list">
-      <?php foreach ([
-        ['اشتراک چقدر طول می‌کشد فعال شود؟', 'پس از ثبت سفارش و بارگذاری رسید، سفارش شما حداکثر طی ۲۴ ساعت بررسی و فعال می‌شود.'],
-        ['روش پرداخت چگونه است؟', 'در حال حاضر پرداخت به‌صورت کارت‌به‌کارت انجام می‌شود. درگاه آنلاین به‌زودی اضافه خواهد شد.'],
-        ['آیا اطلاعات من امن است؟', 'بله. تمام اطلاعات حساس به‌صورت رمزنگاری‌شده ذخیره و ارتباطات از طریق HTTPS محافظت می‌شوند.'],
-        ['اگر مشکلی پیش بیاید چه کنم؟', 'از طریق دکمه پشتیبانی در تلگرام با ما در ارتباط باشید؛ پاسخ‌گوی شما هستیم.'],
-      ] as [$q, $a]): ?>
-      <details class="faq__item glass">
-        <summary class="faq__q"><?= e($q) ?></summary>
-        <p class="faq__a"><?= e($a) ?></p>
-      </details>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
 <!-- ============ CHECKOUT MODAL ============ -->
 <?= $this->component('checkout', ['payment' => $payment]) ?>
 

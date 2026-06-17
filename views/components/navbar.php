@@ -7,8 +7,6 @@
     <nav class="navbar__nav" aria-label="ناوبری اصلی">
       <a href="#hero" class="navbar__link">خانه</a>
       <a href="#plans" class="navbar__link">پلن‌ها</a>
-      <a href="#steps" class="navbar__link">مراحل خرید</a>
-      <a href="#faq" class="navbar__link">سوالات متداول</a>
       <a href="<?= e((string) config('app.support_url')) ?>" class="navbar__link" target="_blank" rel="noopener">پشتیبانی</a>
     </nav>
 
