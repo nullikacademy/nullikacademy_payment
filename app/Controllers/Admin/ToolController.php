@@ -115,7 +115,9 @@ final class ToolController extends Controller
             'name'        => 'required|max:120',
             'slug'        => 'required|max:140|regex:/^[a-z0-9\-]+$/',
             'description' => 'max:2000',
-            'color'       => 'max:32|regex:/^(#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})|rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)|rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*(0|1|0?\.\d+)\s*\))$/',
+            // Array form so the pipe characters inside the regex are not
+            // treated as rule separators.
+            'color'       => ['max:32', 'regex:/^(#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})|rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)|rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*(0|1|0?\.\d+)\s*\))$/'],
             'sort_order'  => 'integer',
             'status'      => 'in:active,inactive',
         ], [
