@@ -78,51 +78,67 @@ final class UsdtPriceService
         }
 
         $row = $this->locateUsdt($response['json']);
-        if ($row === null) {
+        if ($row === null || !isset($row['price'])) {
             Logger::warning('USDT entry not found in price feed.');
             return null;
         }
 
-        $price = (float) ($row['price'] ?? $row['last'] ?? 0);
+        // Tabdeal returns IRT values already in Toman.
+        $price = (float) $row['price'];
         if ($price <= 0) {
             return null;
         }
 
-        // Tabdeal prices are typically in Rial; normalize to Toman.
-        $priceToman = $price >= 100000 ? $price / 10 : $price;
-        $high = (float) ($row['high_24'] ?? $row['high'] ?? $price);
-        $low = (float) ($row['low_24'] ?? $row['low'] ?? $price);
-
         return [
-            'price'             => round($priceToman),
-            'high_24'           => round($high >= 100000 ? $high / 10 : $high),
-            'low_24'            => round($low >= 100000 ? $low / 10 : $low),
-            'change_percent_24' => round((float) ($row['change_percent_24'] ?? $row['change'] ?? 0), 2),
+            'price'             => round($price),
+            'high_24'           => round((float) ($row['high_24'] ?? $price)),
+            'low_24'            => round((float) ($row['low_24'] ?? $price)),
+            'change_percent_24' => round((float) ($row['change_percent_24'] ?? 0), 2),
             'updated_at'        => date('Y-m-d H:i:s'),
         ];
     }
 
-    /** Recursively locate the USDT/IRT entry within the feed payload. */
+    /**
+     * Locate the USDT/IRT price node within the Tabdeal feed.
+     * Expected shape: {"currencies":{"USDT":{"IRT":{"price","high_24","low_24","change_percent_24"}}}}
+     */
     private function locateUsdt(array $data): ?array
     {
-        // Direct keyed structures
-        foreach (['usdt', 'USDT', 'usdt_irt', 'USDTIRT'] as $key) {
-            if (isset($data[$key]) && is_array($data[$key])) {
+        // Primary: exact Tabdeal path.
+        $node = $data['currencies']['USDT']['IRT'] ?? null;
+        if (is_array($node) && isset($node['price'])) {
+            return $node;
+        }
+
+        // Fallbacks for alternative shapes.
+        $node = $data['USDT']['IRT'] ?? $data['usdt']['irt'] ?? null;
+        if (is_array($node) && isset($node['price'])) {
+            return $node;
+        }
+
+        // Generic recursive search for a node that has a numeric "price".
+        return $this->searchPriceNode($data, 0);
+    }
+
+    private function searchPriceNode(array $data, int $depth): ?array
+    {
+        if ($depth > 4) {
+            return null;
+        }
+        // A USDT node keyed directly.
+        foreach (['USDT', 'usdt'] as $key) {
+            if (isset($data[$key]['IRT']['price'])) {
+                return $data[$key]['IRT'];
+            }
+            if (isset($data[$key]['price'])) {
                 return $data[$key];
             }
         }
-
-        // List of currency objects
         foreach ($data as $value) {
             if (is_array($value)) {
-                $symbol = strtolower((string) ($value['symbol'] ?? $value['currency'] ?? $value['name'] ?? ''));
-                if (str_contains($symbol, 'usdt') || str_contains($symbol, 'tether')) {
-                    return $value;
-                }
-                // Recurse one level for nested containers
-                $nested = $this->locateUsdt($value);
-                if ($nested !== null) {
-                    return $nested;
+                $found = $this->searchPriceNode($value, $depth + 1);
+                if ($found !== null) {
+                    return $found;
                 }
             }
         }

@@ -42,6 +42,7 @@ if (!function_exists('navActive')) {
       <a href="<?= e(url('admin/users')) ?>" class="admin-nav__link <?= navActive('/admin/users', $uri) ?>">مدیران</a>
       <?php endif; ?>
       <a href="<?= e(url('admin/settings')) ?>" class="admin-nav__link <?= navActive('/admin/settings', $uri) ?>">تنظیمات</a>
+      <a href="<?= e(url('admin/diagnostics')) ?>" class="admin-nav__link <?= navActive('/admin/diagnostics', $uri) ?>">عیب‌یابی</a>
     </nav>
   </aside>
 

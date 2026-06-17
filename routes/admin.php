@@ -10,6 +10,7 @@ declare(strict_types=1);
 use App\Controllers\Admin\AdminUserController;
 use App\Controllers\Admin\AuthController;
 use App\Controllers\Admin\DashboardController;
+use App\Controllers\Admin\DiagnosticsController;
 use App\Controllers\Admin\OrderController;
 use App\Controllers\Admin\PlanController;
 use App\Controllers\Admin\SettingsController;
@@ -58,4 +59,7 @@ $router->group(['prefix' => '/admin', 'middleware' => ['AdminAuthMiddleware']], 
     $router->get('/settings', [SettingsController::class, 'index']);
     $router->post('/settings', [SettingsController::class, 'update']);
     $router->post('/settings/refresh-price', [SettingsController::class, 'refreshPrice']);
+
+    // Diagnostics
+    $router->get('/diagnostics', [DiagnosticsController::class, 'index']);
 });

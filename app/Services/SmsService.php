@@ -71,10 +71,24 @@ final class SmsService
         );
 
         $ok = $response['ok'] && (($response['json']['status'] ?? '') !== 'ERROR');
-        SmsLog::record($mobile, $type, $patternCode, $variables, $ok ? 'sent' : 'failed', $response['body']);
+
+        // Persist full transport detail so failures are diagnosable
+        // (HTTP status + curl error + raw body), not just an empty body.
+        $detail = json_encode([
+            'endpoint' => $cfg['base_url'] . '/sms/pattern/normal/send',
+            'status'   => $response['status'],
+            'curl'     => $response['error'],
+            'body'     => $response['body'],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        SmsLog::record($mobile, $type, $patternCode, $variables, $ok ? 'sent' : 'failed', $detail);
 
         if (!$ok) {
-            Logger::error('IPPanel send failed.', ['type' => $type, 'status' => $response['status']]);
+            Logger::error('IPPanel send failed.', [
+                'type'   => $type,
+                'status' => $response['status'],
+                'curl'   => $response['error'],
+            ]);
         }
 
         return $ok;
