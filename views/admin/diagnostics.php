@@ -39,6 +39,23 @@
 </section>
 
 <section class="glass detail-card detail-card--wide" style="margin-top:18px">
+  <h2 class="detail-card__title">۳.۵) شناسایی خودکار آدرس صحیح IPPanel</h2>
+  <p class="page-sub">همه‌ی نسخه‌های API را امتحان می‌کند تا مشخص شود کدام آدرس درست است (کدی که status آن ۴۰۴ نباشد).</p>
+  <form method="get" action="<?= e(url('admin/diagnostics')) ?>" class="filters" style="box-shadow:none;padding:0;margin-bottom:14px">
+    <input type="text" name="probe" class="input" dir="ltr" placeholder="0912xxxxxxx" value="<?= e($probeMobile ?? '') ?>" style="max-width:260px">
+    <button class="btn btn--primary btn--sm" type="submit">شناسایی آدرس</button>
+  </form>
+  <?php if (!empty($probe)): ?>
+  <?php foreach ($probe as $r): ?>
+    <p class="page-sub" style="margin-top:10px"><strong dir="ltr"><?= e($r['name']) ?></strong> →
+       status: <strong dir="ltr"><?= e((string) $r['status']) ?></strong>
+       <?php if ($r['curl']): ?> | curl: <span dir="ltr"><?= e((string) $r['curl']) ?></span><?php endif; ?></p>
+    <pre class="diag-pre" dir="ltr"><?= e($r['body'] ?: '(خالی)') ?></pre>
+  <?php endforeach; ?>
+  <?php endif; ?>
+</section>
+
+<section class="glass detail-card detail-card--wide" style="margin-top:18px">
   <h2 class="detail-card__title">۴) تست تلگرام</h2>
   <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/diagnostics?telegram=1')) ?>">ارسال پیام تست به تلگرام</a>
   <?php if ($tgResult): ?><p class="page-sub" style="margin-top:12px"><?= e($tgResult) ?></p><?php endif; ?>

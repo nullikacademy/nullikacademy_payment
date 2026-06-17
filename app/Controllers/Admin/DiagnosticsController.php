@@ -84,6 +84,13 @@ final class DiagnosticsController extends Controller
             $tgResult = $ok ? 'پیام تست تلگرام ارسال شد ✓' : 'ارسال تلگرام ناموفق بود ✗ (توکن/چت‌آیدی را بررسی کنید)';
         }
 
+        // Optional: probe all known IPPanel endpoint variants.
+        $probe = null;
+        $probeMobile = trim((string) $request->query('probe', ''));
+        if ($probeMobile !== '') {
+            $probe = $this->probeIppanel(normalize_mobile($probeMobile));
+        }
+
         $this->view('admin/diagnostics', [
             'title'      => 'عیب‌یابی سرویس‌ها',
             'admin'      => (new AuthService())->user(),
@@ -92,6 +99,74 @@ final class DiagnosticsController extends Controller
             'smsResult'  => $smsResult,
             'smsMobile'  => $smsMobile,
             'tgResult'   => $tgResult,
+            'probe'      => $probe,
+            'probeMobile'=> $probeMobile,
         ], 'admin/layouts/admin');
+    }
+
+    /**
+     * Try every known IPPanel API variant and report status + body for each,
+     * so we can identify the exact endpoint/auth/payload this account uses.
+     */
+    private function probeIppanel(string $mobile): array
+    {
+        $ip = config('services.ippanel');
+        $key = (string) $ip['api_key'];
+        $sender = (string) $ip['sender'];
+        $code = (string) $ip['pattern_otp'];
+        $recipient = mobile_to_e164($mobile);
+        $vars = ['code' => '1234', 'otp' => '1234'];
+
+        $candidates = [
+            [
+                'name'    => 'A) api.ippanel.com/v1 — AccessKey',
+                'url'     => 'https://api.ippanel.com/v1/sms/pattern/normal/send',
+                'headers' => ['Authorization' => 'AccessKey ' . $key],
+                'payload' => ['code' => $code, 'sender' => $sender, 'recipient' => $recipient, 'variable' => (object) $vars],
+            ],
+            [
+                'name'    => 'B) edge.ippanel.com/v1/api/send — AccessKey',
+                'url'     => 'https://edge.ippanel.com/v1/api/send',
+                'headers' => ['Authorization' => 'AccessKey ' . $key],
+                'payload' => ['sending_type' => 'pattern', 'from_number' => $sender, 'code' => $code, 'recipients' => [$recipient], 'params' => (object) $vars],
+            ],
+            [
+                'name'    => 'C) rest.ippanel.com/v1 — apikey header',
+                'url'     => 'https://rest.ippanel.com/v1/messages/patterns/send',
+                'headers' => ['apikey' => $key],
+                'payload' => ['pattern_code' => $code, 'originator' => $sender, 'recipient' => $recipient, 'values' => (object) $vars],
+            ],
+            [
+                'name'    => 'D) api.ippanel.com/v1/messages/patterns/send — apikey',
+                'url'     => 'https://api.ippanel.com/v1/messages/patterns/send',
+                'headers' => ['apikey' => $key],
+                'payload' => ['pattern_code' => $code, 'originator' => $sender, 'recipient' => $recipient, 'values' => (object) $vars],
+            ],
+            [
+                'name'    => 'E) api2.ippanel.com/v1 — AccessKey',
+                'url'     => 'https://api2.ippanel.com/v1/sms/pattern/normal/send',
+                'headers' => ['Authorization' => 'AccessKey ' . $key],
+                'payload' => ['code' => $code, 'sender' => $sender, 'recipient' => $recipient, 'variable' => (object) $vars],
+            ],
+            [
+                'name'    => 'F) edge.ippanel.com/v1/api/send — Authorization KEY (no scheme)',
+                'url'     => 'https://edge.ippanel.com/v1/api/send',
+                'headers' => ['Authorization' => $key],
+                'payload' => ['sending_type' => 'pattern', 'from_number' => $sender, 'code' => $code, 'recipients' => [$recipient], 'params' => (object) $vars],
+            ],
+        ];
+
+        $results = [];
+        foreach ($candidates as $c) {
+            $resp = Http::postJson($c['url'], $c['payload'], $c['headers'], 12);
+            $results[] = [
+                'name'   => $c['name'],
+                'url'    => $c['url'],
+                'status' => $resp['status'],
+                'curl'   => $resp['error'],
+                'body'   => substr((string) ($resp['body'] ?? ''), 0, 600),
+            ];
+        }
+        return $results;
     }
 }
