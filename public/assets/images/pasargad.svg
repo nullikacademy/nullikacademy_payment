@@ -1,7 +1,25 @@
-<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bank Pasargad">
-  <rect width="120" height="40" rx="8" fill="none"/>
-  <circle cx="20" cy="20" r="13" fill="#C9A227"/>
-  <path d="M20 9l3.3 6.7 7.4 1.1-5.3 5.2 1.2 7.3L20 26.1l-6.6 3.5 1.2-7.3-5.3-5.2 7.4-1.1L20 9z" fill="#071226"/>
-  <text x="40" y="18" font-family="Vazirmatn, Tahoma, sans-serif" font-size="13" font-weight="800" fill="#C9A227">پاسارگاد</text>
-  <text x="40" y="32" font-family="Vazirmatn, Tahoma, sans-serif" font-size="8" fill="#C9A227" letter-spacing="1">PASARGAD BANK</text>
+<svg width="150" height="40" viewBox="0 0 150 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="بانک پاسارگاد">
+  <defs>
+    <linearGradient id="pg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F2C94C"/><stop offset="1" stop-color="#C9971B"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(20 20)">
+    <g fill="url(#pg)">
+      <!-- sunburst emblem -->
+      <g>
+        <path d="M0-16 L2.4-6 L-2.4-6 Z"/>
+        <path d="M0 16 L2.4 6 L-2.4 6 Z"/>
+        <path d="M16 0 L6 2.4 L6-2.4 Z"/>
+        <path d="M-16 0 L-6 2.4 L-6-2.4 Z"/>
+        <path d="M11.3-11.3 L6.4-3.6 L3.6-6.4 Z"/>
+        <path d="M-11.3 11.3 L-6.4 3.6 L-3.6 6.4 Z"/>
+        <path d="M11.3 11.3 L3.6 6.4 L6.4 3.6 Z"/>
+        <path d="M-11.3-11.3 L-3.6-6.4 L-6.4-3.6 Z"/>
+      </g>
+      <circle r="4.2"/>
+    </g>
+  </g>
+  <text x="44" y="18" font-family="Vazirmatn, Tahoma, sans-serif" font-size="14" font-weight="800" fill="#F2C94C">بانک پاسارگاد</text>
+  <text x="44" y="32" font-family="Vazirmatn, Tahoma, sans-serif" font-size="8" font-weight="500" fill="#B98E2E" letter-spacing="1.5">PASARGAD BANK</text>
 </svg>
