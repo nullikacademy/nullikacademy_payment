@@ -66,7 +66,7 @@ final class TelegramService
         }
 
         $lines = [
-            '🛒 <b>سفارش جدید در نولیک آکادمی</b>',
+            '🛒 <b>سفارش جدید در نالیک آکادمی</b>',
             '',
             '🔢 <b>شماره سفارش:</b> ' . $esc($order['order_number'] ?? ''),
             '👤 <b>مشتری:</b> ' . $esc(($order['first_name'] ?? '') . ' ' . ($order['last_name'] ?? '')),

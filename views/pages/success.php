@@ -12,8 +12,8 @@
         </svg>
       </div>
 
-      <h1 class="success__title">سفارش با موفقیت ثبت شد</h1>
-      <p class="success__msg">سفارش شما طی ۲۴ ساعت آینده بررسی می‌شود.</p>
+      <h1 class="success__title"><?= e(site_text('success_title', 'سفارش با موفقیت ثبت شد')) ?></h1>
+      <p class="success__msg"><?= e(site_text('success_message', 'سفارش شما طی ۲۴ ساعت آینده بررسی می‌شود.')) ?></p>
 
       <div class="success__order">
         <span class="success__order-label">شماره سفارش</span>
@@ -22,7 +22,7 @@
 
       <a href="<?= e($support_url) ?>" class="btn btn--primary btn--block" target="_blank" rel="noopener">
         <img src="<?= e(asset('images/telegram.svg')) ?>" alt="" width="22" height="22">
-        ارتباط با پشتیبانی
+        <?= e(site_text('support_button', 'ارتباط با پشتیبانی')) ?>
       </a>
       <a href="<?= e(url('/')) ?>" class="link-btn success__home">بازگشت به صفحه اصلی</a>
     </div>

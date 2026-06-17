@@ -18,7 +18,7 @@ final class DashboardController extends Controller
         $byTool = Order::ordersByTool();
 
         $this->view('admin/dashboard', [
-            'title' => 'داشبورد | مدیریت نولیک آکادمی',
+            'title' => 'داشبورد | مدیریت نالیک آکادمی',
             'admin' => (new AuthService())->user(),
             'stats' => [
                 'today'        => Order::countToday(),

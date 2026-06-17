@@ -314,6 +314,25 @@
     });
   }
 
+  /* ---------- Site texts (content) ---------- */
+  function initContent() {
+    var form = $("contentForm");
+    if (!form) return;
+    on(form, "submit", function (e) {
+      e.preventDefault();
+      var body = {};
+      Array.prototype.forEach.call(form.querySelectorAll("input[name], textarea[name]"), function (el) {
+        body[el.name] = el.value;
+      });
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = "در حال ذخیره..."; }
+      adminPost("/admin/content", body).then(function (res) {
+        if (btn) { btn.disabled = false; btn.textContent = "ذخیره متن‌ها"; }
+        UI.toast(res.data.message || (res.ok ? "ذخیره شد" : "خطا"), res.ok ? "success" : "error");
+      });
+    });
+  }
+
   /* ---------- Dashboard charts (canvas, no deps) ---------- */
   function initCharts() {
     var dataEl = $("chart-data");
@@ -369,6 +388,7 @@
     initPlans();
     initUsers();
     initSettings();
+    initContent();
     initCharts();
   }
 

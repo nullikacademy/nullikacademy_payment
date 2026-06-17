@@ -6,6 +6,18 @@ use App\Core\Config;
 use App\Core\Csrf;
 use App\Core\Env;
 
+if (!function_exists('site_text')) {
+    /**
+     * Editable site text. Reads the value stored by the admin "متن‌ها"
+     * section (settings key text_{key}), falling back to the default.
+     */
+    function site_text(string $key, string $default = ''): string
+    {
+        $value = \App\Models\Setting::get('text_' . $key, null);
+        return ($value === null || $value === '') ? $default : (string) $value;
+    }
+}
+
 if (!function_exists('base_path')) {
     function base_path(string $path = ''): string
     {

@@ -43,7 +43,7 @@ if (!$existingAdmin) {
 $settings = [
     ['usdt_price_irt', '60000', 'pricing'],
     ['usdt_price_updated_at', date('Y-m-d H:i:s'), 'pricing'],
-    ['site_title', 'نولیک آکادمی | مارکت‌پلیس اشتراک هوش مصنوعی', 'seo'],
+    ['site_title', 'نالیک آکادمی | مارکت‌پلیس اشتراک هوش مصنوعی', 'seo'],
     ['site_description', 'خرید آسان و امن اشتراک ابزارهای هوش مصنوعی با تحویل سریع و پشتیبانی ۲۴ ساعته.', 'seo'],
     ['online_gateway_enabled', '0', 'payment'],
 ];

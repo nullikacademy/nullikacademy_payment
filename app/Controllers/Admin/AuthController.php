@@ -21,7 +21,7 @@ final class AuthController extends Controller
         }
         // Login uses its own minimal auth layout.
         $content = $this->view->renderWithLayout('admin/login', [
-            'title' => 'ورود مدیریت | نولیک آکادمی',
+            'title' => 'ورود مدیریت | نالیک آکادمی',
         ], 'admin/layouts/auth');
         Response::html($content);
     }

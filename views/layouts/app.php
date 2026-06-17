@@ -4,7 +4,7 @@
  * @var string $title
  * @var string $description
  */
-$title = $title ?? 'نولیک آکادمی';
+$title = $title ?? 'نالیک آکادمی';
 $description = $description ?? 'مارکت‌پلیس اشتراک هوش مصنوعی';
 $appUrl = rtrim((string) config('app.url'), '/');
 $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
@@ -22,7 +22,7 @@ $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="نولیک آکادمی">
+    <meta property="og:site_name" content="نالیک آکادمی">
     <meta property="og:title" content="<?= e($title) ?>">
     <meta property="og:description" content="<?= e($description) ?>">
     <meta property="og:url" content="<?= e($canonical) ?>">
@@ -49,7 +49,7 @@ $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "نولیک آکادمی",
+      "name": "نالیک آکادمی",
       "url": "<?= e($appUrl) ?>",
       "logo": "<?= e(asset('images/logo-mark.svg')) ?>",
       "sameAs": ["<?= e((string) config('app.support_url')) ?>"]

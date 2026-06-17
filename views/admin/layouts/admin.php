@@ -31,7 +31,7 @@ if (!function_exists('navActive')) {
 
   <aside class="admin-sidebar" id="adminSidebar">
     <a href="<?= e(url('admin')) ?>" class="admin-sidebar__brand">
-      <img src="<?= e(asset('images/logo.svg')) ?>" alt="نولیک آکادمی" height="36">
+      <img src="<?= e(asset('images/logo.svg')) ?>" alt="نالیک آکادمی" height="36">
     </a>
     <nav class="admin-nav">
       <a href="<?= e(url('admin')) ?>" class="admin-nav__link <?= navActive('/admin', $uri) ?>">داشبورد</a>
@@ -41,6 +41,7 @@ if (!function_exists('navActive')) {
       <?php if ($role === 'super_admin'): ?>
       <a href="<?= e(url('admin/users')) ?>" class="admin-nav__link <?= navActive('/admin/users', $uri) ?>">مدیران</a>
       <?php endif; ?>
+      <a href="<?= e(url('admin/content')) ?>" class="admin-nav__link <?= navActive('/admin/content', $uri) ?>">متن‌های سایت</a>
       <a href="<?= e(url('admin/settings')) ?>" class="admin-nav__link <?= navActive('/admin/settings', $uri) ?>">تنظیمات</a>
       <a href="<?= e(url('admin/diagnostics')) ?>" class="admin-nav__link <?= navActive('/admin/diagnostics', $uri) ?>">عیب‌یابی</a>
     </nav>

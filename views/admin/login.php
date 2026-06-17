@@ -1,6 +1,6 @@
 <section class="admin-login">
   <div class="admin-login__card glass">
-    <img src="<?= e(asset('images/logo.svg')) ?>" alt="نولیک آکادمی" height="44" class="admin-login__logo">
+    <img src="<?= e(asset('images/logo.svg')) ?>" alt="نالیک آکادمی" height="44" class="admin-login__logo">
     <h1 class="admin-login__title">ورود به پنل مدیریت</h1>
     <p class="admin-login__sub">برای ادامه وارد حساب مدیریتی خود شوید.</p>
 

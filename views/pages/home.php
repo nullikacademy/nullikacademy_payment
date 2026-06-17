@@ -9,9 +9,20 @@
 <section class="hero" id="hero">
   <div class="container">
     <div class="hero__head">
-      <span class="hero__eyebrow">پلتفرم تخصصی هوش مصنوعی</span>
-      <h1 class="hero__title">اشتراک ابزارهای هوش مصنوعی را <span class="grad-text">ساده و امن</span> بخرید</h1>
-      <p class="hero__subtitle">ChatGPT، Claude، Midjourney و ده‌ها ابزار دیگر — تحویل سریع، پرداخت امن و پشتیبانی ۲۴ ساعته.</p>
+      <?php
+        $heroEyebrow   = site_text('hero_eyebrow', 'پلتفرم تخصصی هوش مصنوعی');
+        $heroTitle     = site_text('hero_title', 'اشتراک ابزارهای هوش مصنوعی را ساده و امن بخرید');
+        $heroHighlight = site_text('hero_title_highlight', 'ساده و امن');
+        $heroSubtitle  = site_text('hero_subtitle', 'ChatGPT، Claude، Midjourney و ده‌ها ابزار دیگر — تحویل سریع، پرداخت امن و پشتیبانی ۲۴ ساعته.');
+        // Highlight the configured phrase within the title.
+        $titleHtml = e($heroTitle);
+        if ($heroHighlight !== '' && str_contains($heroTitle, $heroHighlight)) {
+            $titleHtml = str_replace(e($heroHighlight), '<span class="grad-text">' . e($heroHighlight) . '</span>', e($heroTitle));
+        }
+      ?>
+      <span class="hero__eyebrow"><?= e($heroEyebrow) ?></span>
+      <h1 class="hero__title"><?= $titleHtml ?></h1>
+      <p class="hero__subtitle"><?= e($heroSubtitle) ?></p>
     </div>
 
     <?= $this->component('hero-carousel', ['tools' => $tools]) ?>

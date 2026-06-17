@@ -22,7 +22,7 @@ final class HomeController extends Controller
         $payment = Config::get('services.payment');
 
         $this->view('pages/home', [
-            'title'       => 'نولیک آکادمی | مارکت‌پلیس اشتراک هوش مصنوعی',
+            'title'       => 'نالیک آکادمی | مارکت‌پلیس اشتراک هوش مصنوعی',
             'description' => 'خرید آسان و امن اشتراک ابزارهای هوش مصنوعی مانند ChatGPT، Claude، Midjourney و … با تحویل سریع و پشتیبانی ۲۴ ساعته.',
             'tools'       => $tools,
             'ticker'      => $ticker,
@@ -39,7 +39,7 @@ final class HomeController extends Controller
         }
 
         $this->view('pages/success', [
-            'title'       => 'سفارش ثبت شد | نولیک آکادمی',
+            'title'       => 'سفارش ثبت شد | نالیک آکادمی',
             'description' => 'سفارش شما با موفقیت ثبت شد.',
             'order'       => $order,
             'support_url' => Config::get('app.support_url'),
