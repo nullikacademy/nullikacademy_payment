@@ -1,8 +1,6 @@
 <?php /** @var array $ticker */ ?>
 <section class="ticker" id="usdtTicker"
          data-price="<?= e((string) $ticker['price']) ?>"
-         data-high="<?= e((string) $ticker['high_24']) ?>"
-         data-low="<?= e((string) $ticker['low_24']) ?>"
          data-change="<?= e((string) $ticker['change_percent_24']) ?>">
   <div class="container">
     <div class="ticker__card glass">
@@ -15,24 +13,13 @@
         <span class="ticker__live"><span class="dot"></span> زنده</span>
       </div>
 
-      <div class="ticker__grid">
-        <div class="ticker__cell">
-          <span class="ticker__label">قیمت فعلی</span>
-          <span class="ticker__value" id="tkPrice" data-value="<?= e((string) $ticker['price']) ?>">۰</span>
-          <span class="ticker__unit">تومان</span>
-        </div>
-        <div class="ticker__cell">
-          <span class="ticker__label">بیشترین ۲۴ساعت</span>
-          <span class="ticker__value ticker__value--sm" id="tkHigh" data-value="<?= e((string) $ticker['high_24']) ?>">۰</span>
-        </div>
-        <div class="ticker__cell">
-          <span class="ticker__label">کمترین ۲۴ساعت</span>
-          <span class="ticker__value ticker__value--sm" id="tkLow" data-value="<?= e((string) $ticker['low_24']) ?>">۰</span>
-        </div>
-        <div class="ticker__cell">
-          <span class="ticker__label">تغییر ۲۴ساعت</span>
-          <span class="ticker__change" id="tkChange">۰٪</span>
-        </div>
+      <div class="ticker__now">
+        <span class="ticker__value" id="tkPrice" data-value="<?= e((string) $ticker['price']) ?>">۰</span>
+        <span class="ticker__unit">تومان</span>
+      </div>
+      <div class="ticker__change-line">
+        <span class="ticker__change-label">تغییر ۲۴ ساعته:</span>
+        <span class="ticker__change" id="tkChange">۰٪</span>
       </div>
     </div>
   </div>
