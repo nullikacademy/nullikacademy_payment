@@ -35,8 +35,8 @@ $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
     <meta name="twitter:description" content="<?= e($description) ?>">
     <meta name="twitter:image" content="<?= e(asset('images/logo-mark.svg')) ?>">
 
-    <link rel="icon" type="image/svg+xml" href="<?= e(asset('images/favicon.svg')) ?>">
-    <link rel="apple-touch-icon" href="<?= e(asset('images/logo-mark.svg')) ?>">
+    <link rel="icon" type="image/png" href="<?= e(asset('images/cropped-favicon-1.png')) ?>">
+    <link rel="apple-touch-icon" href="<?= e(asset('images/cropped-favicon-1.png')) ?>">
 
     <!-- Vazirmatn font -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>

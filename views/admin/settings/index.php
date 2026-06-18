@@ -3,8 +3,8 @@
 
 <div class="detail-grid">
   <section class="glass detail-card detail-card--wide">
-    <h2 class="detail-card__title">تنظیمات عمومی و سئو</h2>
     <form id="settingsForm">
+      <h2 class="detail-card__title">تنظیمات عمومی و سئو</h2>
       <div class="field"><label class="field__label">عنوان سایت</label>
         <input class="input" name="site_title" value="<?= e($settings['site_title'] ?? '') ?>"></div>
       <div class="field"><label class="field__label">توضیحات سایت (متا)</label>
@@ -15,14 +15,10 @@
           فعال‌سازی درگاه آنلاین
         </label>
       </div>
-      <button type="submit" class="btn btn--primary">ذخیره تنظیمات</button>
-    </form>
-  </section>
 
-  <section class="glass detail-card detail-card--wide">
-    <h2 class="detail-card__title">پیامک‌ها (IPPanel)</h2>
-    <p class="page-sub">کد پترن همان کدی است که برای ارسال استفاده می‌شود. «متن» صرفاً یادداشت شماست (متن واقعی در پنل IPPanel تعریف می‌شود).</p>
-    <form id="smsForm">
+      <h2 class="detail-card__title" style="margin-top:28px">پیامک‌ها (IPPanel)</h2>
+      <p class="page-sub" style="margin-bottom:14px">کد پترن همان کدی است که برای ارسال استفاده می‌شود. «متن» صرفاً یادداشت شماست (متن واقعی در پنل IPPanel تعریف می‌شود).</p>
+
       <div class="field"><label class="field__label">کد پترن کد تأیید (OTP)</label>
         <input class="input" dir="ltr" name="sms_pattern_otp" value="<?= e($settings['sms_pattern_otp'] ?? (string) config('services.ippanel.pattern_otp')) ?>"></div>
       <div class="field"><label class="field__label">متن کد تأیید (یادداشت)</label>
@@ -46,7 +42,7 @@
       <div class="field"><label class="field__label">موبایل ادمین برای دریافت پیامک</label>
         <input class="input" dir="ltr" name="sms_admin_mobile" placeholder="0912xxxxxxx" value="<?= e($settings['sms_admin_mobile'] ?? (string) config('services.ippanel.admin_mobile')) ?>"></div>
 
-      <button type="submit" class="btn btn--primary">ذخیره پیامک‌ها</button>
+      <button type="submit" class="btn btn--primary">ذخیره تنظیمات</button>
     </form>
   </section>
 

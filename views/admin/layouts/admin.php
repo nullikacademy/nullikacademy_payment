@@ -18,7 +18,7 @@ if (!function_exists('navActive')) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= e($title ?? 'مدیریت') ?></title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/svg+xml" href="<?= e(asset('images/favicon.svg')) ?>">
+  <link rel="icon" type="image/png" href="<?= e(asset('images/cropped-favicon-1.png')) ?>">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
   <link rel="stylesheet" href="<?= e(asset('css/main.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">

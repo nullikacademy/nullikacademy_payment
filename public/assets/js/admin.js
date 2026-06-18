@@ -294,26 +294,16 @@
     if (form) {
       on(form, "submit", function (e) {
         e.preventDefault();
-        var body = {
-          site_title: form.site_title.value,
-          site_description: form.site_description.value,
-          online_gateway_enabled: form.online_gateway_enabled.checked ? 1 : 0
-        };
-        adminPost("/admin/settings", body).then(function (res) {
-          UI.toast(res.data.message || (res.ok ? "ذخیره شد" : "خطا"), res.ok ? "success" : "error");
-        });
-      });
-    }
-    // SMS patterns form (serialize all its named fields)
-    var smsForm = $("smsForm");
-    if (smsForm) {
-      on(smsForm, "submit", function (e) {
-        e.preventDefault();
         var body = {};
-        Array.prototype.forEach.call(smsForm.querySelectorAll("input[name], textarea[name]"), function (el) {
-          body[el.name] = el.value;
+        // Serialize every named field (checkboxes -> 1/0).
+        Array.prototype.forEach.call(form.querySelectorAll("input[name], textarea[name], select[name]"), function (el) {
+          if (el.type === "checkbox") { body[el.name] = el.checked ? 1 : 0; }
+          else { body[el.name] = el.value; }
         });
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) { btn.disabled = true; }
         adminPost("/admin/settings", body).then(function (res) {
+          if (btn) { btn.disabled = false; }
           UI.toast(res.data.message || (res.ok ? "ذخیره شد" : "خطا"), res.ok ? "success" : "error");
         });
       });
