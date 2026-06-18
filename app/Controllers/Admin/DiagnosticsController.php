@@ -34,15 +34,21 @@ final class DiagnosticsController extends Controller
         $ip = config('services.ippanel');
         $tg = config('services.telegram');
 
-        // Config presence (masked).
+        // Resolve effective values (admin settings override .env).
+        $resolve = static fn (string $k, string $fb): string => (string) (\App\Models\Setting::get($k, null) ?: config($fb, ''));
+
+        // Config presence (masked) + resolved SMS routing.
         $configRows = [
             'IPPANEL_API_KEY'     => self::mask($ip['api_key']),
             'IPPANEL_SENDER'      => $ip['sender'] ?: '(خالی)',
-            'IPPANEL_PATTERN_OTP' => $ip['pattern_otp'] ?: '(خالی)',
             'IPPANEL_BASE_URL'    => $ip['base_url'],
+            'پترن OTP (مؤثر)'        => $resolve('sms_pattern_otp', 'services.ippanel.pattern_otp') ?: '(خالی!)',
+            'پترن سفارش-مشتری (مؤثر)' => $resolve('sms_pattern_order_user', 'services.ippanel.pattern_order_user') ?: '(خالی!)',
+            'پترن سفارش-ادمین (مؤثر)' => $resolve('sms_pattern_order_admin', 'services.ippanel.pattern_order_admin') ?: '(خالی!)',
+            'پترن تحویل (مؤثر)'      => $resolve('sms_pattern_delivered', 'services.ippanel.pattern_delivered') ?: '(خالی!)',
+            'موبایل ادمین (مؤثر)'    => $resolve('sms_admin_mobile', 'services.ippanel.admin_mobile') ?: '(خالی! - پیامک ادمین ارسال نمی‌شود)',
             'TELEGRAM_BOT_TOKEN'  => self::mask($tg['bot_token']),
             'TELEGRAM_CHAT_ID'    => $tg['chat_id'] ?: '(خالی)',
-            'USDT_PRICE_API'      => (string) config('services.usdt.api'),
             'PHP_VERSION'         => PHP_VERSION,
             'curl'                => function_exists('curl_init') ? 'فعال' : 'غیرفعال!',
             'openssl'             => extension_loaded('openssl') ? 'فعال' : 'غیرفعال!',
@@ -67,6 +73,24 @@ final class DiagnosticsController extends Controller
             $log = Database::selectOne('SELECT status, response FROM sms_logs ORDER BY id DESC LIMIT 1');
             $smsResult = [
                 'mobile'   => $mobile,
+                'returned' => $ok ? 'true (پذیرفته شد)' : 'false (ناموفق)',
+                'status'   => $log['status'] ?? '—',
+                'response' => substr((string) ($log['response'] ?? ''), 0, 3000),
+            ];
+        }
+
+        // Optional admin order-SMS test (uses the admin pattern + admin mobile).
+        if ($request->query('adminsms') === '1') {
+            $ok = (new SmsService())->notifyAdminNewOrder([
+                'name'  => 'تست تشخیصی',
+                'tool'  => 'Claude',
+                'plan'  => 'Pro',
+                'price' => '15,062,400',
+                'date'  => jalali_date(),
+            ]);
+            $log = Database::selectOne("SELECT status, response FROM sms_logs WHERE type='order_admin' ORDER BY id DESC LIMIT 1");
+            $smsResult = [
+                'mobile'   => $resolve('sms_admin_mobile', 'services.ippanel.admin_mobile') ?: '(موبایل ادمین تنظیم نشده)',
                 'returned' => $ok ? 'true (پذیرفته شد)' : 'false (ناموفق)',
                 'status'   => $log['status'] ?? '—',
                 'response' => substr((string) ($log['response'] ?? ''), 0, 3000),

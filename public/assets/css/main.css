@@ -279,7 +279,7 @@ input, textarea, select { font-family: inherit; }
 
 /* ---------- Success page ---------- */
 .success { min-height: 70vh; display: grid; place-items: center; padding: 60px 0; }
-.success__card { max-width: 460px; width: 100%; padding: 44px 34px; text-align: center; }
+.success__card { max-width: 460px; width: 100%; margin-inline: auto; padding: 44px 34px; text-align: center; }
 .success__check { margin-bottom: 18px; display: flex; justify-content: center; }
 .success__ring { stroke-dasharray: 226; stroke-dashoffset: 226; animation: ringDraw 0.9s var(--ease) forwards; }
 .success__tick { stroke-dasharray: 60; stroke-dashoffset: 60; animation: tickDraw 0.5s 0.6s var(--ease) forwards; }
@@ -302,6 +302,7 @@ input, textarea, select { font-family: inherit; }
 .field { margin-bottom: 18px; }
 .field__label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; color: var(--text-dim); }
 .field__error { display: block; color: var(--danger); font-size: 0.8rem; min-height: 1.1em; margin-top: 6px; }
+.field__help { color: var(--text-dim); font-size: 0.82rem; margin-top: 8px; line-height: 1.9; }
 .input {
   width: 100%; padding: 14px 16px; border-radius: var(--radius-sm);
   background: var(--surface-2); border: 1px solid var(--border); color: var(--text); font-size: 0.95rem;

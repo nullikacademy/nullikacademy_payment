@@ -104,6 +104,7 @@ $flag = asset('images/iran-flag.svg');
         <div class="field" id="orgField" hidden>
           <label class="field__label">شناسه سازمانی (Organization ID)</label>
           <input type="text" id="orgInput" class="input" dir="ltr" placeholder="org-xxxxxxxx">
+          <p class="field__help">وارد اکانت خود شوید، در بخش Setting وارد منوی Account شوید و Organization ID را کپی کنید.</p>
           <span class="field__error" id="orgError"></span>
         </div>
 
