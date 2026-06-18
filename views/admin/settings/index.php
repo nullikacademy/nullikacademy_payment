@@ -31,12 +31,17 @@
       <div class="field"><label class="field__label">کد پترن ثبت سفارش (مشتری)</label>
         <input class="input" dir="ltr" name="sms_pattern_order_user" value="<?= e($settings['sms_pattern_order_user'] ?? (string) config('services.ippanel.pattern_order_user')) ?>"></div>
       <div class="field"><label class="field__label">متن ثبت سفارش مشتری (یادداشت)</label>
-        <textarea class="input" name="sms_text_order_user" rows="2"><?= e($settings['sms_text_order_user'] ?? 'سفارش شما با شماره %order% ثبت شد.') ?></textarea></div>
+        <textarea class="input" name="sms_text_order_user" rows="4"><?= e($settings['sms_text_order_user'] ?? "%name% جان؛\nپرداخت شما برای سفارش %product% با موفقیت انجام شد و در صف بررسی می‌باشد.\n\nسپاس از همراهی شما\nنالیک آکادمی") ?></textarea></div>
 
       <div class="field"><label class="field__label">کد پترن سفارش جدید (ادمین)</label>
         <input class="input" dir="ltr" name="sms_pattern_order_admin" value="<?= e($settings['sms_pattern_order_admin'] ?? (string) config('services.ippanel.pattern_order_admin')) ?>"></div>
       <div class="field"><label class="field__label">متن اطلاع‌رسانی ادمین (یادداشت)</label>
-        <textarea class="input" name="sms_text_order_admin" rows="2"><?= e($settings['sms_text_order_admin'] ?? 'سفارش جدید: %order% - %tool%') ?></textarea></div>
+        <textarea class="input" name="sms_text_order_admin" rows="4"><?= e($settings['sms_text_order_admin'] ?? "سفارش جدید: %name%\nابزار %tool%\nپلن %plan%\nمبلغ %price%\nتاریخ %date%\n\nنالیک آکادمی") ?></textarea></div>
+
+      <div class="field"><label class="field__label">کد پترن تحویل داده شده</label>
+        <input class="input" dir="ltr" name="sms_pattern_delivered" value="<?= e($settings['sms_pattern_delivered'] ?? (string) config('services.ippanel.pattern_delivered')) ?>"></div>
+      <div class="field"><label class="field__label">متن تحویل داده شده (یادداشت)</label>
+        <textarea class="input" name="sms_text_delivered" rows="4"><?= e($settings['sms_text_delivered'] ?? "%name% جان؛\nسفارش %product% با موفقیت انجام شد.\n\nسپاس از همراهی شما\nنالیک آکادمی") ?></textarea></div>
 
       <div class="field"><label class="field__label">موبایل ادمین برای دریافت پیامک</label>
         <input class="input" dir="ltr" name="sms_admin_mobile" placeholder="0912xxxxxxx" value="<?= e($settings['sms_admin_mobile'] ?? (string) config('services.ippanel.admin_mobile')) ?>"></div>

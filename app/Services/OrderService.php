@@ -146,13 +146,24 @@ final class OrderService
         }
 
         try {
+            $plan = Plan::find((int) $order['plan_id']);
+            $duration = $plan['duration'] ?? '';
+            $product = trim('اکانت ' . $duration . ' هوش مصنوعی ' . $order['tool_name'] . ' ' . $order['plan_name']);
+
+            // Customer confirmation: %name%, %product%
             $this->sms->sendOrderConfirmationToUser($order['mobile'], [
-                'order'  => $order['order_number'],
-                'name'   => $order['first_name'],
+                'name'    => $order['first_name'],
+                'product' => $product,
+                'order'   => $order['order_number'],
             ]);
+
+            // Admin notification: %name%, %tool%, %plan%, %price%, %date%
             $this->sms->notifyAdminNewOrder([
-                'order' => $order['order_number'],
+                'name'  => trim($order['first_name'] . ' ' . $order['last_name']),
                 'tool'  => $order['tool_name'],
+                'plan'  => $order['plan_name'],
+                'price' => number_format((float) $order['price_irt']),
+                'date'  => jalali_date(strtotime($order['created_at'] ?? 'now')),
             ]);
         } catch (\Throwable $e) {
             Logger::error('SMS notify failed.', ['error' => $e->getMessage()]);

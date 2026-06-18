@@ -92,6 +92,21 @@ final class OrderController extends Controller
 
         Order::changeStatus((int) $id, (string) $data['status'], $auth->id(), (string) $request->input('note', ''));
 
+        // Notify the customer by SMS when the order is delivered.
+        if ($data['status'] === 'delivered' && $order['status'] !== 'delivered') {
+            try {
+                $plan = \App\Models\Plan::find((int) $order['plan_id']);
+                $duration = $plan['duration'] ?? '';
+                $product = trim('اکانت ' . $duration . ' هوش مصنوعی ' . $order['tool_name'] . ' ' . $order['plan_name']);
+                (new \App\Services\SmsService())->sendDeliveredToUser($order['mobile'], [
+                    'name'    => $order['first_name'],
+                    'product' => $product,
+                ]);
+            } catch (\Throwable $e) {
+                \App\Core\Logger::error('Delivered SMS failed.', ['error' => $e->getMessage()]);
+            }
+        }
+
         Response::success([
             'status'       => $data['status'],
             'status_label' => Order::statusLabel((string) $data['status']),

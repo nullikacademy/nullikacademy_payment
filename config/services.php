@@ -13,6 +13,7 @@ return [
         'pattern_otp'    => Env::get('IPPANEL_PATTERN_OTP', ''),
         'pattern_order_user'  => Env::get('IPPANEL_PATTERN_ORDER_USER', ''),
         'pattern_order_admin' => Env::get('IPPANEL_PATTERN_ORDER_ADMIN', ''),
+        'pattern_delivered'   => Env::get('IPPANEL_PATTERN_DELIVERED', ''),
         'admin_mobile'   => Env::get('ADMIN_NOTIFY_MOBILE', ''),
     ],
 

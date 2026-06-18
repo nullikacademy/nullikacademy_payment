@@ -9,6 +9,7 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\Order;
+use App\Models\Setting;
 use App\Models\Tool;
 use App\Services\UsdtPriceService;
 
@@ -22,8 +23,8 @@ final class HomeController extends Controller
         $payment = Config::get('services.payment');
 
         $this->view('pages/home', [
-            'title'       => 'نالیک آکادمی | مارکت‌پلیس اشتراک هوش مصنوعی',
-            'description' => 'خرید آسان و امن اشتراک ابزارهای هوش مصنوعی مانند ChatGPT، Claude، Midjourney و … با تحویل سریع و پشتیبانی ۲۴ ساعته.',
+            'title'       => (string) Setting::get('site_title', 'نالیک آکادمی | مارکت‌پلیس اشتراک هوش مصنوعی'),
+            'description' => (string) Setting::get('site_description', 'خرید آسان و امن اشتراک ابزارهای هوش مصنوعی مانند ChatGPT، Claude، Midjourney و … با تحویل سریع و پشتیبانی ۲۴ ساعته.'),
             'tools'       => $tools,
             'ticker'      => $ticker,
             'payment'     => $payment,

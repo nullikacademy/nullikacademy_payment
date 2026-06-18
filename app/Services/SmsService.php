@@ -50,6 +50,17 @@ final class SmsService
         );
     }
 
+    /** Notify the customer when their order is marked delivered. */
+    public function sendDeliveredToUser(string $mobile, array $vars): bool
+    {
+        return $this->sendPattern(
+            $mobile,
+            $this->setting('sms_pattern_delivered', 'services.ippanel.pattern_delivered'),
+            $vars,
+            'other'
+        );
+    }
+
     public function notifyAdminNewOrder(array $vars): bool
     {
         $adminMobile = $this->setting('sms_admin_mobile', 'services.ippanel.admin_mobile');

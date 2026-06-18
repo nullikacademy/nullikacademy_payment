@@ -39,6 +39,8 @@ final class SettingsController extends Controller
             'sms_text_order_user'     => 'sms',
             'sms_pattern_order_admin' => 'sms',
             'sms_text_order_admin'    => 'sms',
+            'sms_pattern_delivered'   => 'sms',
+            'sms_text_delivered'      => 'sms',
             'sms_admin_mobile'        => 'sms',
         ];
 
