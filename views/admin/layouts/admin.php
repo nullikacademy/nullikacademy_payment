@@ -31,7 +31,7 @@ if (!function_exists('navActive')) {
 
   <aside class="admin-sidebar" id="adminSidebar">
     <a href="<?= e(url('admin')) ?>" class="admin-sidebar__brand">
-      <img src="<?= e(asset('images/logo.svg')) ?>" alt="نالیک آکادمی" height="36">
+      <img src="<?= e(asset('images/Nullik-Academy-Logo.svg')) ?>" alt="نالیک آکادمی" height="36">
     </a>
     <nav class="admin-nav">
       <a href="<?= e(url('admin')) ?>" class="admin-nav__link <?= navActive('/admin', $uri) ?>">داشبورد</a>

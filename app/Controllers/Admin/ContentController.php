@@ -23,6 +23,7 @@ final class ContentController extends Controller
     {
         return [
             'brand_name'        => ['نام برند', 'text', 'نالیک آکادمی'],
+            'og_title'          => ['عنوان اشتراک‌گذاری (og:title)', 'text', 'مارکت‌پلیس اشتراک هوش مصنوعی'],
             'hero_eyebrow'      => ['برچسب بالای عنوان', 'text', 'پلتفرم تخصصی هوش مصنوعی'],
             'hero_title'        => ['عنوان اصلی (هیرو)', 'text', 'اشتراک ابزارهای هوش مصنوعی را ساده و امن بخرید'],
             'hero_title_highlight' => ['بخش برجستهٔ عنوان', 'text', 'ساده و امن'],

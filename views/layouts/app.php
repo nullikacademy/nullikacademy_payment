@@ -22,8 +22,8 @@ $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="نالیک آکادمی">
-    <meta property="og:title" content="<?= e($title) ?>">
+    <meta property="og:site_name" content="<?= e(site_text('brand_name', 'نالیک آکادمی')) ?>">
+    <meta property="og:title" content="<?= e(site_text('og_title', 'مارکت‌پلیس اشتراک هوش مصنوعی')) ?>">
     <meta property="og:description" content="<?= e($description) ?>">
     <meta property="og:url" content="<?= e($canonical) ?>">
     <meta property="og:image" content="<?= e(asset('images/logo-mark.svg')) ?>">

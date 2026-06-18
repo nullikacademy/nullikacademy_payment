@@ -1,7 +1,7 @@
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__brand">
-      <img src="<?= e(asset('images/logo.svg')) ?>" alt="نالیک آکادمی" height="40">
+      <img src="<?= e(asset('images/Nullik-Academy-Logo.svg')) ?>" alt="نالیک آکادمی" height="40">
       <p class="footer__tagline"><?= e(site_text('footer_tagline', 'مارکت‌پلیس اشتراک ابزارهای هوش مصنوعی، سریع و امن.')) ?></p>
     </div>
 

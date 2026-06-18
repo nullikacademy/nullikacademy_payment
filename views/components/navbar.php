@@ -1,7 +1,7 @@
 <header class="navbar" id="navbar">
   <div class="container navbar__inner">
     <a href="<?= e(url('/')) ?>" class="navbar__brand" aria-label="نالیک آکادمی">
-      <img src="<?= e(asset('images/logo.svg')) ?>" alt="نالیک آکادمی" height="40">
+      <img src="<?= e(asset('images/Nullik-Academy-Logo.svg')) ?>" alt="نالیک آکادمی" height="40">
     </a>
 
     <div class="navbar__actions">
