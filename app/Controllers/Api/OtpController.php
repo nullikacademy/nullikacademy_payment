@@ -66,6 +66,19 @@ final class OtpController extends Controller
         Session::set('verified_mobile', $mobile);
         Session::set('verified_at', time());
 
-        Response::success([], $result['message']);
+        // Returning customer? expose their stored name so the checkout
+        // can skip the personal-info step.
+        $user = \App\Models\User::findByMobile($mobile);
+        $firstName = $user['first_name'] ?? '';
+        $lastName = $user['last_name'] ?? '';
+        $hasName = trim($firstName) !== '' && trim($lastName) !== '';
+
+        Response::success([
+            'user' => [
+                'has_name'   => $hasName,
+                'first_name' => $firstName,
+                'last_name'  => $lastName,
+            ],
+        ], $result['message']);
     }
 }

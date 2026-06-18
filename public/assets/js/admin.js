@@ -304,6 +304,20 @@
         });
       });
     }
+    // SMS patterns form (serialize all its named fields)
+    var smsForm = $("smsForm");
+    if (smsForm) {
+      on(smsForm, "submit", function (e) {
+        e.preventDefault();
+        var body = {};
+        Array.prototype.forEach.call(smsForm.querySelectorAll("input[name], textarea[name]"), function (el) {
+          body[el.name] = el.value;
+        });
+        adminPost("/admin/settings", body).then(function (res) {
+          UI.toast(res.data.message || (res.ok ? "ذخیره شد" : "خطا"), res.ok ? "success" : "error");
+        });
+      });
+    }
     on($("refreshPriceBtn"), "click", function () {
       var b = $("refreshPriceBtn"); b.disabled = true; b.textContent = "در حال بروزرسانی...";
       adminPost("/admin/settings/refresh-price", {}).then(function (res) {

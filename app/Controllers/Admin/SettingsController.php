@@ -32,6 +32,14 @@ final class SettingsController extends Controller
             'site_title'             => 'seo',
             'site_description'       => 'seo',
             'online_gateway_enabled' => 'payment',
+            // SMS (IPPanel) pattern codes + reference texts + admin mobile
+            'sms_pattern_otp'         => 'sms',
+            'sms_text_otp'            => 'sms',
+            'sms_pattern_order_user'  => 'sms',
+            'sms_text_order_user'     => 'sms',
+            'sms_pattern_order_admin' => 'sms',
+            'sms_text_order_admin'    => 'sms',
+            'sms_admin_mobile'        => 'sms',
         ];
 
         foreach ($editable as $key => $group) {

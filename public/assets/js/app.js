@@ -38,7 +38,6 @@
           '<span class="plan-card__irt">' + plan.price_irt_formatted + "</span>" +
           '<span class="plan-card__irt-unit">تومان</span>' +
         "</div>" +
-        '<span class="plan-card__usdt">' + UI.toPersian(plan.price_usdt) + " USDT</span>" +
         '<button class="btn btn--primary btn--block plan-card__cta">انتخاب و خرید</button>' +
       "</article>"
     );

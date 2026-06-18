@@ -85,9 +85,22 @@
 
     if (NULLIK.state.verifiedMobile) {
       el.mobileInput.value = UI.toPersian(NULLIK.state.verifiedMobile);
-      goto(3); // skip mobile + otp
+      // Skip mobile+OTP; also skip name if we already know the customer.
+      goto(NULLIK.state.userHasName ? 4 : 3);
     } else {
       goto(1);
+    }
+  }
+
+  /* Trigger the primary action of the current step (keyboard Enter). */
+  function primaryAction() {
+    switch (current) {
+      case 1: sendOtp(false); break;
+      case 2: verifyOtp(); break;
+      case 3: personalNext(); break;
+      case 4: accountNext(); break;
+      case 5: goto(6); break;
+      case 6: if (!el.submitBtn.disabled) submitOrder(); break;
     }
   }
 
@@ -154,8 +167,16 @@
         el.otpInputs.classList.remove("is-error");
         el.otpInputs.classList.add("is-success");
         NULLIK.state.verifiedMobile = NULLIK.state.pendingMobile;
+        var user = (res.data.data && res.data.data.user) || {};
+        NULLIK.state.userHasName = !!user.has_name;
+        if (user.has_name) {
+          el.firstName.value = user.first_name || "";
+          el.lastName.value = user.last_name || "";
+        }
         UI.toast("شماره تأیید شد", "success");
-        setTimeout(function () { goto(3); }, 500);
+        // Returning customers skip the name step and go straight to account.
+        var nextStep = user.has_name ? 4 : 3;
+        setTimeout(function () { goto(nextStep); }, 500);
       } else {
         el.otpInputs.classList.add("is-error");
         var msg = res.data.message || "کد نادرست است.";
@@ -375,7 +396,14 @@
       b.addEventListener("click", close);
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && el.modal.classList.contains("is-open")) close();
+      if (!el.modal.classList.contains("is-open")) return;
+      if (e.key === "Escape") { close(); return; }
+      if (e.key === "Enter") {
+        var tag = (e.target.tagName || "").toLowerCase();
+        if (tag === "textarea") return;            // allow newlines in textareas
+        e.preventDefault();
+        primaryAction();
+      }
     });
 
     initCopyButtons();
