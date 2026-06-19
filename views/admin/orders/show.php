@@ -6,7 +6,10 @@
     <h1 class="page-title">سفارش <span dir="ltr"><?= e($order['order_number']) ?></span></h1>
     <p class="page-sub"><span class="badge badge--<?= e($order['status']) ?>"><?= e($statuses[$order['status']] ?? $order['status']) ?></span></p>
   </div>
-  <a href="<?= e(url('admin/orders')) ?>" class="btn btn--ghost btn--sm">بازگشت</a>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn--ghost btn--sm" id="deleteOrderBtn" data-delete-order="<?= (int) $order['id'] ?>" style="color:var(--danger);border-color:rgba(239,68,68,0.4)">حذف سفارش</button>
+    <a href="<?= e(url('admin/orders')) ?>" class="btn btn--ghost btn--sm">بازگشت</a>
+  </div>
 </div>
 
 <div class="detail-grid">

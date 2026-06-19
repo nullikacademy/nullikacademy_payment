@@ -97,6 +97,23 @@ final class DiagnosticsController extends Controller
             ];
         }
 
+        // Optional customer success-SMS test (uses the order-user pattern).
+        $usersms = trim((string) $request->query('usersms', ''));
+        if ($usersms !== '') {
+            $mobile = normalize_mobile($usersms);
+            $ok = (new SmsService())->sendOrderConfirmationToUser($mobile, [
+                'name'    => 'مرتضی',
+                'product' => 'اکانت یک ماهه هوش مصنوعی Claude Pro',
+            ]);
+            $log = Database::selectOne("SELECT status, response FROM sms_logs WHERE type='order_user' ORDER BY id DESC LIMIT 1");
+            $smsResult = [
+                'mobile'   => $mobile,
+                'returned' => $ok ? 'true (پذیرفته شد)' : 'false (ناموفق)',
+                'status'   => $log['status'] ?? '—',
+                'response' => substr((string) ($log['response'] ?? ''), 0, 3000),
+            ];
+        }
+
         // Optional Telegram test.
         $tgResult = null;
         if ($request->query('telegram') === '1') {

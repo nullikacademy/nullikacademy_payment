@@ -114,6 +114,21 @@
         });
       });
     }
+    // Delete order (list rows + detail page)
+    document.querySelectorAll("[data-delete-order]").forEach(function (b) {
+      on(b, "click", function () {
+        if (!confirm("این سفارش برای همیشه حذف شود؟")) return;
+        var id = b.getAttribute("data-delete-order");
+        adminSend("DELETE", "/admin/orders/" + id).then(function (res) {
+          if (res.ok && res.data.success) {
+            UI.toast("سفارش حذف شد", "success");
+            var row = b.closest("tr");
+            if (row) { row.remove(); }
+            else { setTimeout(function () { window.location.href = NULLIK.baseUrl + "/admin/orders"; }, 600); }
+          } else UI.toast(res.data.message || "خطا", "error");
+        });
+      });
+    });
   }
 
   /* ---------- Modal helpers ---------- */

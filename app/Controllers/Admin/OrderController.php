@@ -113,6 +113,38 @@ final class OrderController extends Controller
         ], 'وضعیت سفارش به‌روزرسانی شد.');
     }
 
+    /** DELETE /admin/orders/{id} */
+    public function destroy(Request $request, string $id): never
+    {
+        $this->ensureCsrf($request);
+
+        $order = Order::find((int) $id);
+        if (!$order) {
+            Response::error('سفارش یافت نشد.', 404);
+        }
+
+        // Remove the receipt file(s) and rows tied to this order.
+        $service = new ReceiptService();
+        foreach (Receipt::where('order_id', (int) $id) as $receipt) {
+            $path = $service->absolutePath($receipt['file_path']);
+            if (is_file($path)) {
+                @unlink($path);
+            }
+            Receipt::delete((int) $receipt['id']);
+        }
+
+        // order_status_history and admin_notes cascade via FK.
+        Order::delete((int) $id);
+
+        \App\Core\Logger::audit('order_deleted', [
+            'order_id' => (int) $id,
+            'number'   => $order['order_number'] ?? '',
+            'admin_id' => (new AuthService())->id(),
+        ]);
+
+        Response::success([], 'سفارش حذف شد.');
+    }
+
     /** POST /admin/orders/{id}/notes */
     public function addNote(Request $request, string $id): never
     {

@@ -34,9 +34,13 @@
 
 <section class="glass detail-card detail-card--wide" style="margin-top:18px">
   <h2 class="detail-card__title">۳) تست پیامک (IPPanel)</h2>
-  <form method="get" action="<?= e(url('admin/diagnostics')) ?>" class="filters" style="box-shadow:none;padding:0;margin-bottom:14px">
-    <input type="text" name="sms" class="input" dir="ltr" placeholder="0912xxxxxxx" value="<?= e($smsMobile) ?>" style="max-width:260px">
+  <form method="get" action="<?= e(url('admin/diagnostics')) ?>" class="filters" style="box-shadow:none;padding:0;margin-bottom:10px">
+    <input type="text" name="sms" class="input" dir="ltr" placeholder="0912xxxxxxx (تست OTP)" value="<?= e($smsMobile) ?>" style="max-width:260px">
     <button class="btn btn--primary btn--sm" type="submit">ارسال پیامک تست (OTP)</button>
+  </form>
+  <form method="get" action="<?= e(url('admin/diagnostics')) ?>" class="filters" style="box-shadow:none;padding:0;margin-bottom:10px">
+    <input type="text" name="usersms" class="input" dir="ltr" placeholder="0912xxxxxxx (تست پیامک موفقیت مشتری)" style="max-width:300px">
+    <button class="btn btn--primary btn--sm" type="submit">تست پیامک موفقیت به مشتری</button>
   </form>
   <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/diagnostics?adminsms=1')) ?>">تست پیامک سفارش به ادمین</a>
   <?php if ($smsResult): ?>

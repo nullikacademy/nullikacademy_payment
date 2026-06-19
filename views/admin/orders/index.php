@@ -54,7 +54,10 @@ $qs = function (array $overrides) use ($filters, $page) {
         <td><?= e(money_irt((int) $o['price_irt'])) ?></td>
         <td><span class="badge badge--<?= e($o['status']) ?>"><?= e($statuses[$o['status']] ?? $o['status']) ?></span></td>
         <td><?= e(to_persian_digits(substr($o['created_at'], 0, 16))) ?></td>
-        <td><a class="link-btn" href="<?= e(url('admin/orders/' . $o['id'])) ?>">جزئیات</a></td>
+        <td>
+          <a class="link-btn" href="<?= e(url('admin/orders/' . $o['id'])) ?>">جزئیات</a>
+          <button class="link-btn link-btn--danger" data-delete-order="<?= (int) $o['id'] ?>">حذف</button>
+        </td>
       </tr>
       <?php endforeach; ?>
     </tbody>

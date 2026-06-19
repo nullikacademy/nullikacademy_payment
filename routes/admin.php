@@ -34,6 +34,7 @@ $router->group(['prefix' => '/admin', 'middleware' => ['AdminAuthMiddleware']], 
     $router->get('/orders/{id}', [OrderController::class, 'show']);
     $router->post('/orders/{id}/status', [OrderController::class, 'updateStatus']);
     $router->post('/orders/{id}/notes', [OrderController::class, 'addNote']);
+    $router->delete('/orders/{id}', [OrderController::class, 'destroy']);
     $router->get('/receipts/{token}', [OrderController::class, 'receipt']);
 
     // Tools

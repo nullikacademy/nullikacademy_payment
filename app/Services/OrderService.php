@@ -154,7 +154,6 @@ final class OrderService
             $this->sms->sendOrderConfirmationToUser($order['mobile'], [
                 'name'    => $order['first_name'],
                 'product' => $product,
-                'order'   => $order['order_number'],
             ]);
 
             // Admin notification: %name%, %tool%, %plan%, %price%, %date%
