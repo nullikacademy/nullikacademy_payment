@@ -90,12 +90,28 @@ final class UsdtPriceService
         }
 
         return [
-            'price'             => round($price),
-            'high_24'           => round((float) ($row['high_24'] ?? $price)),
-            'low_24'            => round((float) ($row['low_24'] ?? $price)),
+            'price'             => round($this->applyMarkup($price)),
+            'high_24'           => round($this->applyMarkup((float) ($row['high_24'] ?? $price))),
+            'low_24'            => round($this->applyMarkup((float) ($row['low_24'] ?? $price))),
             'change_percent_24' => round((float) ($row['change_percent_24'] ?? 0), 2),
             'updated_at'        => date('Y-m-d H:i:s'),
         ];
+    }
+
+    /**
+     * Apply the admin-configured markup to the raw API price.
+     * Settings: usdt_markup_type (value|percent), usdt_markup_amount.
+     */
+    private function applyMarkup(float $price): float
+    {
+        $type = (string) Setting::get('usdt_markup_type', 'value');
+        $amount = (float) Setting::get('usdt_markup_amount', 0);
+        if ($amount === 0.0) {
+            return $price;
+        }
+        return $type === 'percent'
+            ? $price * (1 + $amount / 100)
+            : $price + $amount;
     }
 
     /**

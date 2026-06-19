@@ -42,6 +42,9 @@ final class SettingsController extends Controller
             'sms_pattern_delivered'   => 'sms',
             'sms_text_delivered'      => 'sms',
             'sms_admin_mobile'        => 'sms',
+            // USDT markup applied to the API price
+            'usdt_markup_type'        => 'pricing',
+            'usdt_markup_amount'      => 'pricing',
         ];
 
         foreach ($editable as $key => $group) {

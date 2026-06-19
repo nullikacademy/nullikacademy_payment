@@ -42,14 +42,30 @@
       <div class="field"><label class="field__label">موبایل ادمین برای دریافت پیامک</label>
         <input class="input" dir="ltr" name="sms_admin_mobile" placeholder="0912xxxxxxx" value="<?= e($settings['sms_admin_mobile'] ?? (string) config('services.ippanel.admin_mobile')) ?>"></div>
 
+      <h2 class="detail-card__title" style="margin-top:28px">تنظیم قیمت USDT</h2>
+      <p class="page-sub" style="margin-bottom:14px">مقداری که به قیمت دریافتی از API اضافه می‌شود تا قیمت نهایی نمایش سایت و محاسبه پلن‌ها به‌دست آید.</p>
+      <div class="field-row">
+        <div class="field"><label class="field__label">نوع افزایش</label>
+          <select class="input" name="usdt_markup_type">
+            <option value="value" <?= ($settings['usdt_markup_type'] ?? 'value') === 'value' ? 'selected' : '' ?>>مبلغ ثابت (تومان)</option>
+            <option value="percent" <?= ($settings['usdt_markup_type'] ?? '') === 'percent' ? 'selected' : '' ?>>درصد (٪)</option>
+          </select>
+        </div>
+        <div class="field"><label class="field__label">مقدار افزایش</label>
+          <input class="input" type="number" step="0.01" name="usdt_markup_amount" dir="ltr" value="<?= e((string) ($settings['usdt_markup_amount'] ?? '0')) ?>">
+        </div>
+      </div>
+      <p class="page-sub" style="margin-bottom:18px">مثال: اگر قیمت API برابر ۱۰۰٬۰۰۰ و نوع «درصد» با مقدار ۲ باشد، قیمت نهایی ۱۰۲٬۰۰۰ خواهد بود.</p>
+
       <button type="submit" class="btn btn--primary">ذخیره تنظیمات</button>
     </form>
   </section>
 
   <section class="glass detail-card">
     <h2 class="detail-card__title">نرخ USDT</h2>
-    <p class="page-sub">نرخ فعلی: <strong><?= e(money_irt((float) ($settings['usdt_price_irt'] ?? 0))) ?></strong> تومان</p>
+    <p class="page-sub">نرخ نهایی فعلی (با احتساب افزایش): <strong><?= e(money_irt((float) ($settings['usdt_price_irt'] ?? 0))) ?></strong> تومان</p>
     <p class="page-sub">آخرین بروزرسانی: <?= e(to_persian_digits((string) ($settings['usdt_price_updated_at'] ?? '—'))) ?></p>
+    <p class="page-sub">پس از تغییر مقدار افزایش، روی دکمه زیر بزنید تا قیمت‌ها بازمحاسبه شوند.</p>
     <button class="btn btn--ghost btn--sm" id="refreshPriceBtn">بروزرسانی نرخ و قیمت پلن‌ها</button>
   </section>
 </div>
