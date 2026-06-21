@@ -20,20 +20,21 @@ $canonical = $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
     <link rel="canonical" href="<?= e($canonical) ?>">
     <meta name="robots" content="index, follow">
 
+<?php $ogImage = site_text('og_image', 'https://nullikacademy.ir/wp-content/uploads/2024/01/nullikacademy-cover.jpg'); ?>
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?= e(site_text('brand_name', 'نالیک آکادمی')) ?>">
     <meta property="og:title" content="<?= e(site_text('og_title', 'مارکت‌پلیس اشتراک هوش مصنوعی')) ?>">
     <meta property="og:description" content="<?= e($description) ?>">
     <meta property="og:url" content="<?= e($canonical) ?>">
-    <meta property="og:image" content="<?= e(asset('images/logo-mark.svg')) ?>">
+    <meta property="og:image" content="<?= e($ogImage) ?>">
     <meta property="og:locale" content="fa_IR">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?= e($title) ?>">
     <meta name="twitter:description" content="<?= e($description) ?>">
-    <meta name="twitter:image" content="<?= e(asset('images/logo-mark.svg')) ?>">
+    <meta name="twitter:image" content="<?= e($ogImage) ?>">
 
     <link rel="icon" type="image/png" href="<?= e(asset('images/cropped-favicon-1.png')) ?>">
     <link rel="apple-touch-icon" href="<?= e(asset('images/cropped-favicon-1.png')) ?>">
