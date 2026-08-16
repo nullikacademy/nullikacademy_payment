@@ -47,6 +47,12 @@ final class SettingsController extends Controller
             'usdt_markup_amount'      => 'pricing',
         ];
 
+        $markupKeys = ['usdt_markup_type', 'usdt_markup_amount'];
+        $markupBefore = [
+            'usdt_markup_type'   => (string) Setting::get('usdt_markup_type', 'value'),
+            'usdt_markup_amount' => (string) Setting::get('usdt_markup_amount', '0'),
+        ];
+
         foreach ($editable as $key => $group) {
             $value = $request->input($key);
             if ($value !== null) {
@@ -54,7 +60,24 @@ final class SettingsController extends Controller
             }
         }
 
-        Response::success([], 'تنظیمات ذخیره شد.');
+        // Changing the markup changes every plan's Toman price, so apply it
+        // now rather than leaving the catalogue stale until the next cron run.
+        $markupChanged = false;
+        foreach ($markupKeys as $key) {
+            if ((string) Setting::get($key, '') !== $markupBefore[$key]) {
+                $markupChanged = true;
+            }
+        }
+
+        if (!$markupChanged) {
+            Response::success([], 'تنظیمات ذخیره شد.');
+        }
+
+        $updated = (new UsdtPriceService())->recalculatePlans();
+        Response::success(
+            ['plans_updated' => $updated],
+            "تنظیمات ذخیره شد و قیمت {$updated} پلن با سود جدید به‌روزرسانی شد."
+        );
     }
 
     /** POST /admin/settings/refresh-price — manually refresh USDT price. */

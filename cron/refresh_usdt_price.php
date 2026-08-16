@@ -19,8 +19,9 @@ date_default_timezone_set((string) config('app.timezone', 'Asia/Tehran'));
 $result = (new App\Services\UsdtPriceService())->refreshAndRecalculate();
 
 fwrite(STDOUT, sprintf(
-    "[%s] USDT price: %s IRT | plans updated: %d\n",
+    "[%s] USDT market: %s IRT | plan rate: %s IRT | plans updated: %d\n",
     date('Y-m-d H:i:s'),
     number_format((float) $result['price']),
+    number_format((float) $result['pricing_rate']),
     (int) $result['plans_updated']
 ));

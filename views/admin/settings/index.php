@@ -42,8 +42,11 @@
       <div class="field"><label class="field__label">موبایل ادمین برای دریافت پیامک</label>
         <input class="input" dir="ltr" name="sms_admin_mobile" placeholder="0912xxxxxxx" value="<?= e($settings['sms_admin_mobile'] ?? (string) config('services.ippanel.admin_mobile')) ?>"></div>
 
-      <h2 class="detail-card__title" style="margin-top:28px">تنظیم قیمت USDT</h2>
-      <p class="page-sub" style="margin-bottom:14px">مقداری که به قیمت دریافتی از API اضافه می‌شود تا قیمت نهایی نمایش سایت و محاسبه پلن‌ها به‌دست آید.</p>
+      <h2 class="detail-card__title" style="margin-top:28px">سود روی قیمت پلن‌ها</h2>
+      <p class="page-sub" style="margin-bottom:14px">
+        این مقدار فقط در <strong>محاسبهٔ قیمت پلن‌ها</strong> اعمال می‌شود.
+        تیکر «قیمت لحظه‌ای تتر» در صفحهٔ اصلی همیشه نرخ واقعی بازار را نشان می‌دهد و سود در آن اعمال نمی‌شود.
+      </p>
       <div class="field-row">
         <div class="field"><label class="field__label">نوع افزایش</label>
           <select class="input" name="usdt_markup_type">
@@ -55,7 +58,11 @@
           <input class="input" type="number" step="0.01" name="usdt_markup_amount" dir="ltr" value="<?= e((string) ($settings['usdt_markup_amount'] ?? '0')) ?>">
         </div>
       </div>
-      <p class="page-sub" style="margin-bottom:18px">مثال: اگر قیمت API برابر ۱۰۰٬۰۰۰ و نوع «درصد» با مقدار ۲ باشد، قیمت نهایی ۱۰۲٬۰۰۰ خواهد بود.</p>
+      <p class="page-sub" style="margin-bottom:18px">
+        <strong>درصد:</strong> همان درصد به قیمت هر پلن اضافه می‌شود. با نرخ ۱۰۰٬۰۰۰ و درصد ۲، پلن ۹ دلاری از ۹۰۰٬۰۰۰ به ۹۱۸٬۰۰۰ تومان می‌رسد.<br>
+        <strong>مبلغ ثابت:</strong> این مبلغ به نرخ <em>هر دلار</em> اضافه می‌شود، نه به کل سفارش. با مبلغ ۱٬۰۰۰ تومان،
+        پلن ۹ دلاری ۹٬۰۰۰ تومان و پلن ۷۹ دلاری ۷۹٬۰۰۰ تومان گران‌تر می‌شود.
+      </p>
 
       <button type="submit" class="btn btn--primary">ذخیره تنظیمات</button>
     </form>
@@ -63,9 +70,12 @@
 
   <section class="glass detail-card">
     <h2 class="detail-card__title">نرخ USDT</h2>
-    <p class="page-sub">نرخ نهایی فعلی (با احتساب افزایش): <strong><?= e(money_irt((float) ($settings['usdt_price_irt'] ?? 0))) ?></strong> تومان</p>
+    <p class="page-sub">نرخ بازار (همین عدد در سایت نمایش داده می‌شود):
+      <strong><?= e(money_irt((float) ($settings['usdt_price_irt'] ?? 0))) ?></strong> تومان</p>
+    <p class="page-sub">نرخ محاسبهٔ پلن‌ها (با احتساب سود):
+      <strong><?= e(money_irt((new \App\Services\UsdtPriceService())->pricingRate())) ?></strong> تومان</p>
     <p class="page-sub">آخرین بروزرسانی: <?= e(to_persian_digits((string) ($settings['usdt_price_updated_at'] ?? '—'))) ?></p>
-    <p class="page-sub">پس از تغییر مقدار افزایش، روی دکمه زیر بزنید تا قیمت‌ها بازمحاسبه شوند.</p>
+    <p class="page-sub">قیمت پلن‌ها با ذخیرهٔ سود به‌صورت خودکار بازمحاسبه می‌شود. دکمهٔ زیر نرخ را هم از نو از API می‌گیرد.</p>
     <button class="btn btn--ghost btn--sm" id="refreshPriceBtn">بروزرسانی نرخ و قیمت پلن‌ها</button>
   </section>
 </div>

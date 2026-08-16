@@ -1,8 +1,13 @@
 <?php
-/** @var array $plans @var array $tools @var float $usdt_price */
+/** @var array $plans @var array $tools @var float $market_rate @var float $pricing_rate */
 ?>
 <div class="page-head page-head--row">
-  <div><h1 class="page-title">پلن‌ها</h1><p class="page-sub">قیمت تومان به‌صورت خودکار از نرخ USDT محاسبه می‌شود (نرخ فعلی: <?= e(money_irt($usdt_price)) ?> تومان)</p></div>
+  <div><h1 class="page-title">پلن‌ها</h1>
+    <p class="page-sub">قیمت تومان به‌صورت خودکار از نرخ USDT محاسبه می‌شود.<br>
+      نرخ بازار (نمایش در سایت): <strong><?= e(money_irt($market_rate)) ?></strong> تومان —
+      نرخ محاسبهٔ پلن‌ها (با احتساب سود): <strong><?= e(money_irt($pricing_rate)) ?></strong> تومان
+    </p>
+  </div>
   <button class="btn btn--primary btn--sm" id="newPlanBtn">+ پلن جدید</button>
 </div>
 
@@ -80,4 +85,4 @@
   </div>
 </div>
 
-<script type="application/json" id="usdt-rate"><?= json_encode(['rate' => $usdt_price]) ?></script>
+<script type="application/json" id="usdt-rate"><?= json_encode(['rate' => $pricing_rate]) ?></script>

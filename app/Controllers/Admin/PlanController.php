@@ -11,6 +11,7 @@ use App\Models\Plan;
 use App\Models\Setting;
 use App\Models\Tool;
 use App\Services\AuthService;
+use App\Services\UsdtPriceService;
 
 final class PlanController extends Controller
 {
@@ -18,11 +19,14 @@ final class PlanController extends Controller
     public function index(Request $request): never
     {
         $this->view('admin/plans/index', [
-            'title'      => 'مدیریت پلن‌ها',
-            'admin'      => (new AuthService())->user(),
-            'plans'      => Plan::allWithTool(),
-            'tools'      => Tool::all('name ASC'),
-            'usdt_price' => (float) Setting::get('usdt_price_irt', 60000),
+            'title'        => 'مدیریت پلن‌ها',
+            'admin'        => (new AuthService())->user(),
+            'plans'        => Plan::allWithTool(),
+            'tools'        => Tool::all('name ASC'),
+            // Market rate is what visitors see; pricing rate includes the
+            // markup and is what plan prices are actually built from.
+            'market_rate'  => (float) Setting::get('usdt_price_irt', 0),
+            'pricing_rate' => (new UsdtPriceService())->pricingRate(),
         ], 'admin/layouts/admin');
     }
 
@@ -100,10 +104,13 @@ final class PlanController extends Controller
         ]);
     }
 
-    /** price_irt = current USDT->IRT rate * plan usdt price. */
+    /**
+     * price_irt = plan usdt price * the marked-up pricing rate.
+     * The markup lives in UsdtPriceService so plan prices and the public
+     * ticker cannot drift apart.
+     */
     private function irtFromUsdt(float $priceUsdt): int
     {
-        $rate = (float) Setting::get('usdt_price_irt', 60000);
-        return (int) round($priceUsdt * $rate);
+        return (int) round($priceUsdt * (new UsdtPriceService())->pricingRate());
     }
 }

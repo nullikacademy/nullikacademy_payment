@@ -13,6 +13,10 @@ use App\Models\Setting;
 /**
  * Fetches live USDT->IRT price from Tabdeal and recalculates plan
  * prices. Cached to disk to limit external calls.
+ *
+ * The admin markup applies to plan pricing only. Everything the public
+ * sees — the landing ticker and GET /api/usdt-price — reports the raw
+ * market rate, so the quoted Tether price stays truthful.
  */
 final class UsdtPriceService
 {
@@ -26,7 +30,8 @@ final class UsdtPriceService
     }
 
     /**
-     * Return current ticker data (cached). Shape:
+     * Return current ticker data (cached), at the raw market rate with
+     * no markup applied. Shape:
      * ['price','high_24','low_24','change_percent_24','updated_at']
      */
     public function ticker(bool $force = false): array
@@ -89,18 +94,51 @@ final class UsdtPriceService
             return null;
         }
 
+        // Raw market values — the markup belongs to plan pricing only.
         return [
-            'price'             => round($this->applyMarkup($price)),
-            'high_24'           => round($this->applyMarkup((float) ($row['high_24'] ?? $price))),
-            'low_24'            => round($this->applyMarkup((float) ($row['low_24'] ?? $price))),
+            'price'             => round($price),
+            'high_24'           => round((float) ($row['high_24'] ?? $price)),
+            'low_24'            => round((float) ($row['low_24'] ?? $price)),
             'change_percent_24' => round((float) ($row['change_percent_24'] ?? 0), 2),
             'updated_at'        => date('Y-m-d H:i:s'),
         ];
     }
 
     /**
-     * Apply the admin-configured markup to the raw API price.
+     * The rate used to convert a plan's USDT price into Toman: the
+     * market rate plus the admin-configured markup. This is the only
+     * place the markup is applied.
+     *
+     * Reads settings only — no outbound request — so it is safe to call
+     * on every plan save.
+     *
+     * @param float|null $marketRate Defaults to the stored market rate.
+     */
+    public function pricingRate(?float $marketRate = null): float
+    {
+        $rate = $marketRate ?? (float) Setting::get('usdt_price_irt', 0);
+        // Rounded like the market rate, so percentage markups do not leave
+        // floating-point noise in the rate shown to the admin.
+        return $rate > 0 ? round($this->applyMarkup($rate)) : 0.0;
+    }
+
+    /**
+     * Reprice every plan from the stored market rate, without hitting
+     * the price API. Used when the markup settings change.
+     */
+    public function recalculatePlans(): int
+    {
+        $rate = $this->pricingRate();
+        return $rate > 0 ? Plan::recalculatePrices($rate) : 0;
+    }
+
+    /**
+     * Apply the admin-configured markup to a market rate.
      * Settings: usdt_markup_type (value|percent), usdt_markup_amount.
+     *
+     * Note that in 'value' mode the amount is added to the rate, so each
+     * plan gains (price_usdt * amount) Toman — a per-USDT spread rather
+     * than a flat fee per order.
      */
     private function applyMarkup(float $price): float
     {
@@ -162,22 +200,37 @@ final class UsdtPriceService
     }
 
     /**
-     * Refresh the price, persist it, and recalculate all plan IRT prices.
-     * Invoked by cron every 10 minutes.
+     * Refresh the market rate, persist it, and recalculate all plan IRT
+     * prices at the marked-up rate. Invoked by cron every 10 minutes.
+     *
+     * usdt_price_irt stores the raw market rate — the markup is applied
+     * to plan prices only and is never persisted into that setting.
      */
     public function refreshAndRecalculate(): array
     {
         $ticker = $this->ticker(true);
-        $price = (float) $ticker['price'];
+        $marketRate = (float) $ticker['price'];
 
-        if ($price > 0) {
-            Setting::set('usdt_price_irt', (string) $price, 'pricing');
+        if ($marketRate > 0) {
+            Setting::set('usdt_price_irt', (string) $marketRate, 'pricing');
             Setting::set('usdt_price_updated_at', date('Y-m-d H:i:s'), 'pricing');
-            $updated = Plan::recalculatePrices($price);
-            Logger::info('USDT price refreshed.', ['price' => $price, 'plans_updated' => $updated]);
-            return ['price' => $price, 'plans_updated' => $updated];
+
+            $pricingRate = $this->pricingRate($marketRate);
+            $updated = Plan::recalculatePrices($pricingRate);
+
+            Logger::info('USDT price refreshed.', [
+                'market_rate'   => $marketRate,
+                'pricing_rate'  => $pricingRate,
+                'plans_updated' => $updated,
+            ]);
+
+            return [
+                'price'         => $marketRate,
+                'pricing_rate'  => $pricingRate,
+                'plans_updated' => $updated,
+            ];
         }
 
-        return ['price' => 0, 'plans_updated' => 0];
+        return ['price' => 0, 'pricing_rate' => 0, 'plans_updated' => 0];
     }
 }
